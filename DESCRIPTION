@@ -1,0 +1,23 @@
+Package: gbpca
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Authors@R: person("Stefan", "Stein", email = "s.stein@warwick.ac.uk",
+                  role = c("aut", "cre"))
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Depends: tidyverse,
+    stringr,
+    grDevices,
+    graphics,
+    stats
+Suggests: knitr,
+    readr,
+    xtable,
+    kableExtra,
+    pander,
+    rmarkdown
+RoxygenNote: 6.1.0
