@@ -1,3 +1,22 @@
+#' Generates report about a conducted gbpca.
+#'
+#' Takes results from a previous gbpca and automatically generates a .pdf report
+#' for it.
+#'
+#' @param df The data frame that was analysed with \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
+#' @param versus What value of \code{versus} was used?
+#' @param target What \code{target} was used?
+#' @param test Which hypothesis test was used alongside the counting method?
+#' @param ssv Which \code{ssv} have been used in the analysis? If \code{NULL}, it
+#' will be assumed that \code{ssv = NULL} was passed to \code{\link{gbpca}} or \code{\link{categorical.gbpca}}
+#' and all numeric variables in \code{df} will be used.
+#' @param outlier_removal_target Was outlier removal conducted for \code{target}?
+#' @param outlier_removal_ssv Was outlier removal conducted for each \code{ssv}?
+#' @param good_end Are \code{"low"} or \code{"high"} values of \code{target} good?
+#' @param results_path Filepath to a .csv file containing results from \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
+
+
+
 report <- function(df,
                    versus = 8,
                    target = "max17_343_36",

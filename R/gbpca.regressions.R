@@ -41,6 +41,8 @@
 #' @examples gbpca.regressions(iris, target = "Sepal.Length")
 #'
 #' @export
+#'
+#' @importFrom stringr str_replace_all
 
 
 

@@ -3,11 +3,87 @@
 
 # Outlier removal for categorical target makes no sense
 
+#' gbpca function for categorical target variables
+#'
+#' This function performs an good/bad - pairwise comparison analysis on a dataset and returns those parameters found to be influential.
+#' @param df Data frame to be analysed.
+#' @param versus How many Best of the Best and Worst of the Worst do we collect? By default, we will collect 8 of each.
+#' @param target Target varaible to be analysed. Must be categorical.
+#' Use \code{\link{gbpca}} for continuous \code{target}.
+#' @param best.cat The best category. The \code{versus} BOB will be selected randomly from this
+#' category.
+#' @param worst.cat The worst category. The \code{versus} WOW will be selected randomly from this
+#' category.
+#' @param test Statistical hypothesis test to be used to determine influential
+#' process parameters. Choose between Wilcoxon Rank test (\code{"w"}, default)
+#' and Student's t-test (\code{"t"}).
+#' @param ssv A vector of suspected sources of variation. These are the variables
+#' in \code{df} which we believe might have an influence on the \code{target} variable and
+#' will be tested. If no list of \code{ssv} is provided, the test will be performed
+#' on all numeric variables.
+#' @param outlier_removal_ssv Logical. Should outlier removal be performed for each \code{ssv} (default: \code{TRUE})?
+#'
+#'
+#' @return A data frame with the following columns
+#'\tabular{ll}{
+#' \code{Causes} \tab Those \code{ssv} that have been found to be influential to the \code{target} variable.\cr
+#' \code{Count} \tab The value returned by the counting method. \cr
+#' \code{p.value} \tab The p-value of the hypothesis test performed, i.e. either of the
+#' Wilcoxon rank test (in case \code{test = "w"}) or the t-test (if \code{test = "t"}).\cr
+#' \code{good_lower_bound} \tab The lower bound for this \code{Cause} for good quality.\cr
+#' \code{good_upper_bound} \tab The upper bound for this \code{Cause} for good quality.\cr
+#' \code{bad_lower_bound} \tab The lower bound for this \code{Cause} for bad quality.\cr
+#' \code{bad_upper_bound} \tab The upper bound for this \code{Cause} for bad quality.\cr
+#' \code{na_removed} \tab How many missing values were in the data set for this \code{Cause}?\cr
+#' \code{ties_best_cat} \tab How many observations fall into the best category? \cr
+#' \code{ties_worst_cat} \tab How many observations fall into the worst category?
+#' }
+#'
+#'
+#'
+#' @details We collect the Best of the Best and the Worst of the Worst
+#' dynamically dependent on the current \code{ssv}. That means, for each \code{ssv} we first
+#' remove all the observations with missing values for that \code{ssv} from \code{df}.
+#' Then, based on the remaining observations, we randomly select \code{versus}
+#' observations from the the best category (“Best of the Best”, short BOB)  and
+#' \code{versus} observations from the worst category
+#' (“Worst of the Worst”, short WOW). By default, we select 8 of each.
+#' Next, we compare BOB and WOW using the the counting method and the specified
+#' hypothesis test. If the distributions of the \code{ssv} in BOB and WOW are
+#' significantly different, the current \code{ssv} has been identified as influential
+#' to the \code{target} variable. An \code{ssv} is considered influential, if the test returns
+#' a count larger/ equal to 6 and/ or a p-value of less than 0.05.
+#' For the next \code{ssv} we again start with the entire dataset \code{df}, remove all
+#' the observations with missing values for that new \code{ssv} and then select our
+#' new BOB and WOW. In particular, for each \code{ssv} we might select different observations.
+#' This dynamic selection is necessary, because in case of an incomplete data set,
+#' if we select the same BOB and WOW for all the \code{ssv}, we might end up with many
+#' missing values for particular \code{ssv}. In that case the hypothesis test loses
+#' statistical power, because it is used on a smaller sample or worse, might
+#' fail altogether if the sample size gets too small.
+#'
+#' For those \code{ssv} determined to be significant, control bands are extracted. The rationale is:
+#' If the value for an \code{ssv} is in the interval [\code{good_lower_bound},\code{good_upper_bound}]
+#' the \code{target} is likely to be good. If it is in the interval
+#' [\code{bad_lower_bound},\code{bad_upper_bound}], the \code{target} is likely to be bad.
+#'
+#' Furthermore some summary statistics are provided: \code{na_removed} tells us
+#' how many observations have been removed for a particular \code{ssv}. When
+#' selecting the \code{versus} BOB/ WOW, the selection is done randomly from within
+#' the best/ worst category, i.e. the \code{versus} BOB/ WOW are not uniquely
+#' determined. The randomness in the selection is quantified by \code{ties_best_cat,
+#' ties_worst_cat}, which gives the size of the best/ worst category respectively.
+#'
+#' @examples categorical.gbpca(mtcars, target = "cyl", best.cat = "8", worst.cat = "4")
+#'
+#' @export
+#'
+#' @importFrom dplyr select filter contains arrange desc min_rank %>%
+#' @importFrom grDevices boxplot.stats dev.off png
+#' @importFrom graphics abline boxplot plot
+#' @importFrom stats lm p.adjust t.test var wilcox.test
+#'
 
-library(readr)
-library(readxl)
-library(tidyverse)
-library(stringr) #for replacing special characters in variable names
 
 categorical.gbpca <- function(df,
                              versus = 8,
@@ -16,9 +92,7 @@ categorical.gbpca <- function(df,
                              worst.cat = "CGO",
                              test = "w",
                              ssv = NULL,
-                             outlier_removal_ssv = TRUE,
-                             good_end = "low"
-){
+                             outlier_removal_ssv = TRUE){
 
 
   # Preparations ------------------------------------------------------------
@@ -86,7 +160,7 @@ categorical.gbpca <- function(df,
 
   # Dynamically select BOB and WOW
   for(i in 1:l_ssv){
-    print(names(df_clean[i]))
+    #print(names(df_clean[i]))
     #we need to use df[[target]], because target is not in df_clean
     BOB.WOW_i <- data.frame(Big_Y = df[[target]], df_clean[,i])
     # Remove all missing records
@@ -124,15 +198,8 @@ categorical.gbpca <- function(df,
 
 
 
-    #assign BOB/ WOW
-    if(good_end == "low"){
       BOB_i <- sample.best.cat
       WOW_i <- sample.worst.cat
-    }else if(good_end == "high"){
-      BOB_i <- sample.worst.cat
-      WOW_i <- sample.best.cat
-    }else{print("Ordering for target variable not correctly specified.")}
-
 
     # Testing
     ith_counting_test <- counting.test(BOB_i[,2], WOW_i[,2])
@@ -149,7 +216,8 @@ categorical.gbpca <- function(df,
                  p_values[i] <-  -2})
     }
   }
-
+  #To please R CMD check
+  Count <- NULL
   results <- data.frame(Causes = ssv,
                         Count = test_results,
                         p.values = p_values,

@@ -1,7 +1,3 @@
-library(readr)
-library(readxl)
-library(tidyverse)
-library(stringr) #for replacing special characters in variable names
 # GBPCA: Outlier removal and dynamic obs selection ------------------
 
 #' gbpca function for continuous target variables
@@ -9,7 +5,7 @@ library(stringr) #for replacing special characters in variable names
 #' This function performs an good/bad - pairwise comparison analysis on a dataset and returns those parameters found to be influential.
 #' @param df Data frame to be analysed.
 #' @param versus How many Best of the Best and Worst of the Worst do we collect? By default, we will collect 8 of each.
-#' @param target Target varaible to be analysed. Must be continuous. Use \code{categorical.gbpca()} for categorical target.
+#' @param target Target varaible to be analysed. Must be continuous. Use \code{\link{categorical.gbpca}} for categorical target.
 #' @param test Statistical hypothesis test to be used to determine influential
 #' process parameters. Choose between Wilcoxon Rank test (\code{"w"}, default) and Student's t-test (\code{"t"}).
 #' @param ssv A vector of suspected sources of variation. These are the variables
@@ -91,12 +87,15 @@ library(stringr) #for replacing special characters in variable names
 #'\code{competing_for_lower <- versus - (nrow(lower_end) - ties_lower_end)}.
 #'The values for \code{ties_upper_end} and \code{competition_upper_end} are determined analogously.
 #'
-#'
 #' @examples gbpca(iris, target = "Sepal.Length")
 #'
 #' @export
 #'
-
+#' @importFrom dplyr select filter contains arrange desc min_rank %>%
+#' @importFrom grDevices boxplot.stats dev.off png
+#' @importFrom graphics abline boxplot plot
+#' @importFrom stats lm p.adjust t.test var wilcox.test
+#'
 
 
 
@@ -259,7 +258,8 @@ gbpca <- function(df,
                p_values[i] <-  -2})
     }
     }
-
+    #To please R CMD check
+    Count <- NULL
     results <- data.frame(Causes = ssv,
                 Count = test_results,
                 p.values = p_values,

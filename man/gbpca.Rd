@@ -13,7 +13,7 @@ gbpca(df, versus = 8, target = "max17_343_36", test = "w",
 
 \item{versus}{How many Best of the Best and Worst of the Worst do we collect? By default, we will collect 8 of each.}
 
-\item{target}{Target varaible to be analysed. Must be continuous. Use \code{categorical.gbpca()} for categorical target.}
+\item{target}{Target varaible to be analysed. Must be continuous. Use \code{\link{categorical.gbpca}} for categorical target.}
 
 \item{test}{Statistical hypothesis test to be used to determine influential
 process parameters. Choose between Wilcoxon Rank test (\code{"w"}, default) and Student's t-test (\code{"t"}).}
