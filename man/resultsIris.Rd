@@ -10,6 +10,6 @@ resultsIris
 }
 \description{
 This is the output of
-\code{results <- gbpca(iris, target = "Sepal.Length")}
+\code{resultsIris <- gbpca(iris, target = "Sepal.Length")}
 }
 \keyword{datasets}

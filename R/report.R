@@ -13,7 +13,12 @@
 #' @param outlier_removal_target Was outlier removal conducted for \code{target}?
 #' @param outlier_removal_ssv Was outlier removal conducted for each \code{ssv}?
 #' @param good_end Are \code{"low"} or \code{"high"} values of \code{target} good?
-#' @param results_path Filepath to a .csv file containing results from \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
+#' @param results_path Filepath to a .csv file containing results of \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
+#' @param validation Logical. Has validation of the results been performed?
+#' @param validation_path Filepath to a .csv file containing the results validation.
+#' @param validation_counts Filepath to a .csv file containing the counts from validation.
+#'
+#' @export
 
 
 
@@ -25,8 +30,7 @@ report <- function(df,
                    outlier_removal_target = TRUE,
                    outlier_removal_ssv = TRUE,
                    good_end = "low",
-                   results_path = "Data/results.csv",
-                   good_bad_bands_path = "Data/good_bad_bands.csv",
+                   results_path = "resultsIris.csv",
                    validation = FALSE,
                    validation_path = "Data/good_bad_validated_records.csv",
                    validation_counts = "Data/good_bad_counts.csv"){
@@ -39,8 +43,10 @@ report <- function(df,
     ssv <- names(df_num)
     ssv <- ssv[-which( ssv == target)]
   }
-
-  rmarkdown::render("Good_Bad_Report.Rmd", params = list(
+  path_to_markdown <- system.file("rmd", "Good_Bad_Report.Rmd", package = "gbpca")
+  rmarkdown::render(path_to_markdown,
+                    output_dir = getwd(),
+                    params = list(
     df_name = deparse(substitute(df)),
     versus = versus,
     target = target,
@@ -50,7 +56,6 @@ report <- function(df,
     outlier_removal_ssv = outlier_removal_ssv,
     good_end = good_end,
     results_path = results_path,
-    good_bad_bands_path = good_bad_bands_path,
     validation = validation,
     validation_path = validation_path,
     validation_counts = validation_counts

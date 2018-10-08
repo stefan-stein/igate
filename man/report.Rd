@@ -7,8 +7,7 @@
 report(df, versus = 8, target = "max17_343_36", test = "w",
   ssv = NULL, outlier_removal_target = TRUE,
   outlier_removal_ssv = TRUE, good_end = "low",
-  results_path = "Data/results.csv",
-  good_bad_bands_path = "Data/good_bad_bands.csv", validation = FALSE,
+  results_path = "resultsIris.csv", validation = FALSE,
   validation_path = "Data/good_bad_validated_records.csv",
   validation_counts = "Data/good_bad_counts.csv")
 }

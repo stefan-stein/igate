@@ -1,0 +1,3 @@
+Causes,Count,p.values,good_lower_bound,good_upper_bound,bad_lower_bound,bad_upper_bound,na_removed,ties_lower_end,competition_lower_end,ties_upper_end,competition_upper_end,adjusted.p.values
+Petal.Length,16,8.598969101507301e-4,1,1.4,6.1,6.9,0,4,3,0,0,0.0013378394631674755
+Petal.Width,16,6.689197315837377e-4,0.1,0.3,1.8,2.3,0,4,3,0,0,0.0013378394631674755
