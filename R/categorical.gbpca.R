@@ -8,7 +8,7 @@
 #' This function performs an good/bad - pairwise comparison analysis on a dataset and returns those parameters found to be influential.
 #' @param df Data frame to be analysed.
 #' @param versus How many Best of the Best and Worst of the Worst do we collect? By default, we will collect 8 of each.
-#' @param target Target varaible to be analysed. Must be categorical.
+#' @param target Target variable to be analysed. Must be categorical.
 #' Use \code{\link{gbpca}} for continuous \code{target}.
 #' @param best.cat The best category. The \code{versus} BOB will be selected randomly from this
 #' category.
@@ -108,9 +108,7 @@ categorical.gbpca <- function(df,
   # If no ssv are provided, we take all the numeric columns as ssv
   if(is.null(ssv)){
     nums <- sapply(df, is.numeric)
-    df_num <- df[,nums]%>%
-      select(-contains("time"),
-             -contains("visit"))
+    df_num <- df[,nums]
     ssv <- names(df_num)
   }
   #only keep data corresponding to ssv

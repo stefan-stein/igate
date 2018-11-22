@@ -12,16 +12,17 @@ output: html_document
 params:
   df_name:  "data_frame"
   versus: 8
-  target: "max17_343_36"
+  target: "Sepal.Length"
   test: "w"
   ssv:  !r c("a", "b", "c")
   outlier_removal_target: !r TRUE
   outlier_removal_ssv: !r TRUE
   good_end: "low"
-  results_path: "resultsIris.csv"
+  results_path: "resultsIris"
   validation: !r FALSE
-  validation_path: "Data/good_bad_validated_records.csv"
-  validation_counts: "Data/good_bad_counts.csv"
+  validation_path: "validatedObsIris"
+  validation_counts: "validationCountsIris"
+  image_directory: "~/"
 ---
 
 ```{r setup, include=FALSE}
@@ -41,8 +42,10 @@ follow_up_test <- if(params$test == "w"){"Wilcoxon Rank Test"}else{"Student's t-
 data(list = params$results_path)
 results <- get(params$results_path)
 if(params$validation){
-validation <- read_csv(params$validation_path)
-validation_counts <- read_csv(params$validation_counts)
+data(list = params$validation_path)
+validation <- get(params$validation_path)
+data(list = params$validation_counts)
+validation_counts <- get(params$validation_counts)
 }
 ```
 
@@ -59,16 +62,19 @@ A sanity check was performed for the selected parameters by visually inspecting 
 
 The influential parameters and control bands `r if(params$validation){"have"}else{"have not yet"}` been validated.
 
+The images are stored in `r params$image_directory`.
+
 The results of the analysis are stored in `r getwd()`.
 
 
 ## Analysis
 
-Outlier removal for the target variable was `r if(params$outlier_removal_target){"conducted, giving the following results."}else{"not conducted"}`. 
+Outlier removal for the target variable was `r if(params$outlier_removal_target){"conducted, giving the following results"}else{"not conducted"}`. 
 
 ```{r, eval= params$outlier_removal_target, out.width='50%', fig.align='center', fig.cap='Boxplot of target variable.', fig.pos= 'h'}
 #Determine the filename of boxplot of target
-filepath <- paste0("Boxplot_of_", params$target,".png")
+#filepath <- paste0("Boxplot_of_", params$target,".png")
+filepath <- paste0(params$image_directory,"/Boxplot_of_", params$target,".png")
 knitr::include_graphics(filepath)
 ```
 
@@ -141,13 +147,14 @@ The influential parameters and control bands `r if(params$validation){"have"}els
 
 ```{r}
 if(params$validation){
-validation <- validation[order(validation$quality),]
+validation <- validation[order(validation$expected_quality),]
 # number_bads <- validation%>%
 #   filter(quality == "bad")%>%
 #   nrow()
 # print(number_bads)
 # validation_length <- nrow(validation)
 kable(validation,
+      row.names = FALSE,
       caption = 'The records of the validation data set that fall into all the good control bands resp. bad control bands.',
       booktabs = TRUE,
       longtable = TRUE)%>%
@@ -180,8 +187,13 @@ The regression plots that were used to determine the final selection of influent
 # # We want three plots per row
 length_causes <- length(results$Causes)
 
+# for (i in 1:length_causes) {
+#    plot_name <- paste0(str_replace_all(results$Causes[i], "[^[:alnum:]]", ""), "_against_", params$target,".png")
+#    cat("![](", plot_name, "){width=33%}")
+#    cat('\n')
+# }
 for (i in 1:length_causes) {
-   plot_name <- paste0(str_replace_all(results$Causes[i], "[^[:alnum:]]", ""), "_against_", params$target,".png")
+   plot_name <- paste0(params$image_directory,"/",str_replace_all(results$Causes[i], "[^[:alnum:]]", ""), "_against_", params$target,".png")
    cat("![](", plot_name, "){width=33%}")
    cat('\n')
 }

@@ -133,9 +133,7 @@ gbpca <- function(df,
   # If no ssv are provided, we take all the numeric columns as ssv
   if(is.null(ssv)){
     nums <- sapply(df, is.numeric)
-    df_num <- df[,nums]%>%
-      select(-contains("time"),
-             -contains("visit"))
+    df_num <- df[,nums]
     ssv <- names(df_num)
     ssv <- ssv[-which( ssv == target)]
   }

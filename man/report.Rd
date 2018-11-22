@@ -4,12 +4,12 @@
 \alias{report}
 \title{Generates report about a conducted gbpca.}
 \usage{
-report(df, versus = 8, target = "max17_343_36", test = "w",
+report(df, versus = 8, target = "Sepal.Length", test = "w",
   ssv = NULL, outlier_removal_target = TRUE,
   outlier_removal_ssv = TRUE, good_end = "low",
-  results_path = "resultsIris.csv", validation = FALSE,
-  validation_path = "Data/good_bad_validated_records.csv",
-  validation_counts = "Data/good_bad_counts.csv")
+  results_path = "resultsIris", validation = FALSE,
+  validation_path = "validatedObsIris",
+  validation_counts = "validationCountsIris")
 }
 \arguments{
 \item{df}{The data frame that was analysed with \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
@@ -30,9 +30,32 @@ and all numeric variables in \code{df} will be used.}
 
 \item{good_end}{Are \code{"low"} or \code{"high"} values of \code{target} good?}
 
-\item{results_path}{Filepath to a .csv file containing results from \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
+\item{results_path}{Filepath to a .csv file containing results of \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
+
+\item{validation}{Logical. Has validation of the results been performed?}
+
+\item{validation_path}{Filepath to a .csv file containing the results validation.}
+
+\item{validation_counts}{Filepath to a .csv file containing the counts from validation.}
 }
 \description{
-Takes results from a previous gbpca and automatically generates a .pdf report
+Takes results from a previous gbpca and automatically generates a html report
 for it.
+}
+\examples{
+## If you want to create a new gbpca from scratch, this is the last step
+## and relies on executing the other functions in this package first.
+## Run gbpca
+results <- gbpca(iris, target = "Sepal.Length")
+## Produce regression plots
+gbpca.regressions(iris, target = "Sepal.Length")
+## Validate findings and store results
+x <- validate(iris, target = "Sepal.Length", causes = results$Causes, results_df = results)
+## Split above results
+validatedObs <- as.data.frame(x[1])
+validationCounts <- as.data.frame(x[2])
+## Create report
+report(df = iris, target = "Sepal.Length", results_path = "results",
+validation = TRUE, validation_path = "validatedObs", validation_counts = "validationCounts")
+
 }

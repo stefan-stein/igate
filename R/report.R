@@ -1,6 +1,6 @@
 #' Generates report about a conducted gbpca.
 #'
-#' Takes results from a previous gbpca and automatically generates a .pdf report
+#' Takes results from a previous gbpca and automatically generates a html report
 #' for it.
 #'
 #' @param df The data frame that was analysed with \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
@@ -18,22 +18,38 @@
 #' @param validation_path Filepath to a .csv file containing the results validation.
 #' @param validation_counts Filepath to a .csv file containing the counts from validation.
 #'
+#' @examples
+#' ## If you want to create a new gbpca from scratch, this is the last step
+#' ## and relies on executing the other functions in this package first.
+#' ## Run gbpca
+#' results <- gbpca(iris, target = "Sepal.Length")
+#' ## Produce regression plots
+#' gbpca.regressions(iris, target = "Sepal.Length")
+#' ## Validate findings and store results
+#' x <- validate(iris, target = "Sepal.Length", causes = results$Causes, results_df = results)
+#' ## Split above results
+#' validatedObs <- as.data.frame(x[1])
+#' validationCounts <- as.data.frame(x[2])
+#' ## Create report
+#' report(df = iris, target = "Sepal.Length", results_path = "results",
+#' validation = TRUE, validation_path = "validatedObs", validation_counts = "validationCounts")
+#'
 #' @export
 
 
 
 report <- function(df,
                    versus = 8,
-                   target = "max17_343_36",
+                   target = "Sepal.Length",
                    test = "w",
                    ssv = NULL,
                    outlier_removal_target = TRUE,
                    outlier_removal_ssv = TRUE,
                    good_end = "low",
-                   results_path = "resultsIris.csv",
+                   results_path = "resultsIris",
                    validation = FALSE,
-                   validation_path = "Data/good_bad_validated_records.csv",
-                   validation_counts = "Data/good_bad_counts.csv"){
+                   validation_path = "validatedObsIris",
+                   validation_counts = "validationCountsIris"){
   # If no ssv are provided, all the numeric columns have been used as ssv
   if(is.null(ssv)){
     nums <- sapply(df, is.numeric)
@@ -44,6 +60,8 @@ report <- function(df,
     ssv <- ssv[-which( ssv == target)]
   }
   path_to_markdown <- system.file("rmd", "Good_Bad_Report.Rmd", package = "gbpca")
+  image_directory <- getwd()
+  print(image_directory)
   rmarkdown::render(path_to_markdown,
                     output_dir = getwd(),
                     params = list(
@@ -58,7 +76,8 @@ report <- function(df,
     results_path = results_path,
     validation = validation,
     validation_path = validation_path,
-    validation_counts = validation_counts
+    validation_counts = validation_counts,
+    image_directory = image_directory
   ))
 
 }

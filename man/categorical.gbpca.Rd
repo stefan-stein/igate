@@ -13,7 +13,7 @@ categorical.gbpca(df, versus = 8, target = "gradecat_345_36",
 
 \item{versus}{How many Best of the Best and Worst of the Worst do we collect? By default, we will collect 8 of each.}
 
-\item{target}{Target varaible to be analysed. Must be categorical.
+\item{target}{Target variable to be analysed. Must be categorical.
 Use \code{\link{gbpca}} for continuous \code{target}.}
 
 \item{best.cat}{The best category. The \code{versus} BOB will be selected randomly from this
