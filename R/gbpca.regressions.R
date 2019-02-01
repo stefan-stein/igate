@@ -72,7 +72,10 @@ gbpca.regressions <- function(df,
   #only keep data corresponding to ssv
   df_ssv <- df[,which(names(df) %in% ssv)]
   # this is for windows version in case there is only one ssv
-  df_ssv <- as.data.frame(df_ssv)
+  if(is.vector(df_ssv)){
+    df_ssv <- as.data.frame(df_ssv)
+    names(df_ssv) <- ssv
+  }
 
   #collect summary statistics about outliers
   outlier.df <- data.frame(Causes = names(df_ssv),

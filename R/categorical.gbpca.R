@@ -114,7 +114,10 @@ categorical.gbpca <- function(df,
   #only keep data corresponding to ssv
   df_clean <- df[,which(names(df) %in% ssv)]
   # this is for windows version in case there is only one ssv
-  df_clean <- as.data.frame(df_clean)
+  if(is.vector(df_clean)){
+    df_clean <- as.data.frame(df_clean)
+    names(df_clean) <- ssv
+  }
 
   # Summary vectors ---------------------------------------------------------
 
