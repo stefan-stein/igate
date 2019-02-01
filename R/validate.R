@@ -43,7 +43,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr mutate
+#' @importFrom dplyr mutate select
 
 
 validate <- function(validation_df,
@@ -51,7 +51,7 @@ validate <- function(validation_df,
                      causes,
                      results_df){
   columns <- c(target, as.character(causes))
-  relevant_columns <- validation_df[,which(names(validation_df) %in% columns)]
+  relevant_columns <- validation_df%>%select(c(target, as.character(causes)))
   number_columns <- ncol(relevant_columns)
   number_rows <- nrow(relevant_columns)
   #Count how many good/ bad obs per cause. First entry is meaningless
