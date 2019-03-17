@@ -22,6 +22,6 @@ causes = resultsIris$Causes,
 results_df = resultsIris)
 }
 
-\code{validatedObsIris <- as.data.frame(x[1])}
+\code{validatedObsIris <- x[[1]]}
 }
 \keyword{datasets}

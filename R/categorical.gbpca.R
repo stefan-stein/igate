@@ -191,7 +191,7 @@ categorical.gbpca <- function(df,
     obs.worst.cat <- BOB.WOW_i[BOB.WOW_i$Big_Y == worst.cat,]
     tied_obs_worst[i] <- nrow(obs.worst.cat)
     if(tied_obs_worst[i] < 8){
-      print(paste("Not enough best cat obsevations for", names(BOB.WOW_i)[2]))
+      print(paste("Not enough worst cat obsevations for", names(BOB.WOW_i)[2]))
       test_results[i] <-  -2
       next
     }else{

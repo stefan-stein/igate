@@ -1,4 +1,4 @@
-#'validatedObsIris data set
+#'validationSummaryIris data set
 #'
 #'Example validation data file to be used for example report generation.
 #'
@@ -13,8 +13,8 @@
 #'results_df = resultsIris)
 #'}
 #'
-#'\code{validatedObsIris <- x[[1]]}
+#'\code{validationSummaryIris <- x[[3]]}
 #'
 #' @format A data frame as described in the documentation of \code{\link{validate}}.
 #'
-"validatedObsIris"
+"validationSummaryIris"

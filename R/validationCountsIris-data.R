@@ -13,7 +13,7 @@
 #'results_df = resultsIris)
 #'}
 #'
-#'\code{validationCountsIris <- as.data.frame(x[2])}
+#'\code{validationCountsIris <- x[[2]]}
 #'
 #' @format A data frame as described in the documentation of \code{\link{validate}}.
 #'

@@ -101,7 +101,7 @@
 
 gbpca <- function(df,
                              versus = 8,
-                             target = "max17_343_36",
+                             target = "Sepal.Length",
                              test = "w",
                              ssv = NULL,
                              outlier_removal_target = TRUE,
@@ -191,7 +191,7 @@ gbpca <- function(df,
 
   # Dynamically select BOB and WOW
   for(i in 1:l_ssv){
-    print(names(df_clean[i]))
+    #print(names(df_clean[i]))
     BOB.WOW_i <- data.frame(Big_Y = df[[target]], df_clean[,i])
     # Remove all missing records
     na_removed[i] <- sum(is.na(BOB.WOW_i[,2]))

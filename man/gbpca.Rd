@@ -4,7 +4,7 @@
 \alias{gbpca}
 \title{gbpca function for continuous target variables}
 \usage{
-gbpca(df, versus = 8, target = "max17_343_36", test = "w",
+gbpca(df, versus = 8, target = "Sepal.Length", test = "w",
   ssv = NULL, outlier_removal_target = TRUE,
   outlier_removal_ssv = TRUE, good_end = "low")
 }

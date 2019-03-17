@@ -4,7 +4,7 @@
 \alias{validate}
 \title{Validates results after using \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
 \usage{
-validate(validation_df, target, causes, results_df)
+validate(validation_df, target, causes, results_df, type = NULL)
 }
 \arguments{
 \item{validation_df}{Data frame to be used for validation. It is recommended to use
@@ -20,12 +20,15 @@ If you saved the results of \code{\link{gbpca}}/ \code{\link{categorical.gbpca}}
 \code{results}, simply use \code{results$Causes} here.}
 
 \item{results_df}{The data frame containing the results of \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
+
+\item{type}{The type of gbpca that was performed: either \code{"continuous"} or \code{"categorical"}. If not provided
+function will try to guess the correct type based on the type of \code{validation_df[[target]]}.}
 }
 \value{
-A list of two data frames is returned. The first data frame contains those observations
+A list of three data frames is returned. The first data frame contains those observations
 in \code{validation_df} that fall into *all* the good resp. bad control bands specified in \code{results_df}.
 The columns are \code{target}, then one column for each of the \code{causes} and a new column
-\code{expected_quality} which is \code{"good"} if the observations falls into all the good
+\code{expected_quality} which is \code{"good"} if the observation falls into all the good
 control bands and \code{"bad"} if it falls into all the bad control bands.
 
 The second data frame has three columns
@@ -35,6 +38,22 @@ The second data frame has three columns
 of this cause, how many observations would we select?\cr
 \code{Bad_Count} \tab If we selected all those observations that fall into the bad band
 of this cause, how many observations would we select?
+}
+
+The third data frame summarizes the first data frame: If \code{type = "continuous"} it has
+three columns:
+\tabular{ll}{
+\code{expected_quality} \tab Either \code{"good"} or \code{"bad"}.\cr
+\code{max_target} \tab The maximum value for \code{target} for the observations with "good"
+expected quality resp. "bad" expected quality. \cr
+\code{min_target} \tab Minimum value of \code{target} for good resp. bad expected quality.
+}
+If \code{type = "categorical"} it has the following three columns:
+\tabular{ll}{
+\code{expected_quality} \tab Either \code{"good"} or \code{"bad"}.\cr
+\code{Category} \tab A list of categories of the observations with expected quality good resp. bad. \cr
+\code{Frequency} \tab A count how often the respective \code{Category} appears amongs the observations with
+good/ bad expected quality.
 }
 }
 \description{

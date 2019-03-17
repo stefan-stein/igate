@@ -4,12 +4,13 @@
 \alias{report}
 \title{Generates report about a conducted gbpca.}
 \usage{
-report(df, versus = 8, target = "Sepal.Length", test = "w",
-  ssv = NULL, outlier_removal_target = TRUE,
+report(df, versus = 8, target = "Sepal.Length", type = "continuous",
+  test = "w", ssv = NULL, outlier_removal_target = TRUE,
   outlier_removal_ssv = TRUE, good_end = "low",
   results_path = "resultsIris", validation = FALSE,
   validation_path = "validatedObsIris",
-  validation_counts = "validationCountsIris")
+  validation_counts = "validationCountsIris",
+  validation_summary = "validationSummaryIris")
 }
 \arguments{
 \item{df}{The data frame that was analysed with \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
@@ -17,6 +18,8 @@ report(df, versus = 8, target = "Sepal.Length", test = "w",
 \item{versus}{What value of \code{versus} was used?}
 
 \item{target}{What \code{target} was used?}
+
+\item{type}{Was \code{\link{gbpca}} (use \code{type = "continuous"}) or \code{\link{categorical.gbpca}} (use \code{type = "categorical"}) conducted?}
 
 \item{test}{Which hypothesis test was used alongside the counting method?}
 
@@ -34,9 +37,9 @@ and all numeric variables in \code{df} will be used.}
 
 \item{validation}{Logical. Has validation of the results been performed?}
 
-\item{validation_path}{Filepath to a .csv file containing the results validation.}
+\item{validation_path}{R object containing the validated observations, i.e. first data frame returned by \code{\link{validate}}.}
 
-\item{validation_counts}{Filepath to a .csv file containing the counts from validation.}
+\item{validation_counts}{R object containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.}
 }
 \description{
 Takes results from a previous gbpca and automatically generates a html report

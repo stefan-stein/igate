@@ -6,6 +6,7 @@
 #' @param df The data frame that was analysed with \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
 #' @param versus What value of \code{versus} was used?
 #' @param target What \code{target} was used?
+#' @param type Was \code{\link{gbpca}} (use \code{type = "continuous"}) or \code{\link{categorical.gbpca}} (use \code{type = "categorical"}) conducted?
 #' @param test Which hypothesis test was used alongside the counting method?
 #' @param ssv Which \code{ssv} have been used in the analysis? If \code{NULL}, it
 #' will be assumed that \code{ssv = NULL} was passed to \code{\link{gbpca}} or \code{\link{categorical.gbpca}}
@@ -15,8 +16,8 @@
 #' @param good_end Are \code{"low"} or \code{"high"} values of \code{target} good?
 #' @param results_path Filepath to a .csv file containing results of \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
 #' @param validation Logical. Has validation of the results been performed?
-#' @param validation_path Filepath to a .csv file containing the results validation.
-#' @param validation_counts Filepath to a .csv file containing the counts from validation.
+#' @param validation_path R object containing the validated observations, i.e. first data frame returned by \code{\link{validate}}.
+#' @param validation_counts R object containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.
 #'
 #' @examples
 #' ## If you want to create a new gbpca from scratch, this is the last step
@@ -41,6 +42,7 @@
 report <- function(df,
                    versus = 8,
                    target = "Sepal.Length",
+                   type = "continuous",
                    test = "w",
                    ssv = NULL,
                    outlier_removal_target = TRUE,
@@ -49,7 +51,8 @@ report <- function(df,
                    results_path = "resultsIris",
                    validation = FALSE,
                    validation_path = "validatedObsIris",
-                   validation_counts = "validationCountsIris"){
+                   validation_counts = "validationCountsIris",
+                   validation_summary = "validationSummaryIris"){
   # If no ssv are provided, all the numeric columns have been used as ssv
   if(is.null(ssv)){
     nums <- sapply(df, is.numeric)
@@ -57,7 +60,10 @@ report <- function(df,
       select(-contains("time"),
              -contains("visit"))
     ssv <- names(df_num)
-    ssv <- ssv[-which( ssv == target)]
+    # This only works for continuous target. For categorical target would give empty vector.
+    if(type=="continuous"){
+      ssv <- ssv[-which( ssv == target)]
+    }
   }
   path_to_markdown <- system.file("rmd", "Good_Bad_Report.Rmd", package = "gbpca")
   image_directory <- getwd()
@@ -68,6 +74,7 @@ report <- function(df,
     df_name = deparse(substitute(df)),
     versus = versus,
     target = target,
+    type = type,
     test = test,
     ssv = ssv,
     outlier_removal_target = outlier_removal_target,
@@ -77,6 +84,7 @@ report <- function(df,
     validation = validation,
     validation_path = validation_path,
     validation_counts = validation_counts,
+    validation_summary = validation_summary,
     image_directory = image_directory
   ))
 
