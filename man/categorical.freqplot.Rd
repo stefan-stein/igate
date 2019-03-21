@@ -5,7 +5,7 @@
 \title{Produces frequency plots (normed to density plots to account for
 different category sizes) for sanity check in categorical GBPCA.}
 \usage{
-categorical.freqplot(df, target = "gradecat_345_36", ssv = NULL,
+categorical.freqplot(df, target = "cyl", ssv = NULL,
   outlier_removal_ssv = TRUE)
 }
 \arguments{

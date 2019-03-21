@@ -51,7 +51,7 @@
 
 
 categorical.freqplot <- function(df,
-                                 target = "gradecat_345_36",
+                                 target = "cyl",
                                  ssv =NULL,
                                  outlier_removal_ssv = TRUE){
 

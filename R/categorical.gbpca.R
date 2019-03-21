@@ -87,9 +87,9 @@
 
 categorical.gbpca <- function(df,
                              versus = 8,
-                             target = "gradecat_345_36",
-                             best.cat = "HiB++",
-                             worst.cat = "CGO",
+                             target = "cyl",
+                             best.cat = "8",
+                             worst.cat = "4",
                              test = "w",
                              ssv = NULL,
                              outlier_removal_ssv = TRUE){

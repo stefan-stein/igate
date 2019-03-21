@@ -18,6 +18,7 @@
 #' @param validation Logical. Has validation of the results been performed?
 #' @param validation_path R object containing the validated observations, i.e. first data frame returned by \code{\link{validate}}.
 #' @param validation_counts R object containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.
+#' @param validation_summary R object containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.
 #'
 #' @examples
 #' ## If you want to create a new gbpca from scratch, this is the last step
