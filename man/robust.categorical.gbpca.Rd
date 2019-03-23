@@ -2,7 +2,7 @@
 % Please edit documentation in R/robust.categorical.gbpca.R
 \name{robust.categorical.gbpca}
 \alias{robust.categorical.gbpca}
-\title{Robust gbpca function for categorical target variables}
+\title{Robust gbpca for categorical target variables}
 \usage{
 robust.categorical.gbpca(df, versus = 8, target = "cyl",
   best.cat = "8", worst.cat = "4", test = "w", ssv = NULL,

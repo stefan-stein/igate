@@ -6,7 +6,7 @@
 \usage{
 report(df, versus = 8, target = "Sepal.Length", type = "continuous",
   test = "w", ssv = NULL, outlier_removal_target = TRUE,
-  outlier_removal_ssv = TRUE, good_end = "low",
+  outlier_removal_ssv = TRUE, good_outcome = "low",
   results_path = "resultsIris", validation = FALSE,
   validation_path = "validatedObsIris",
   validation_counts = "validationCountsIris",
@@ -27,11 +27,13 @@ report(df, versus = 8, target = "Sepal.Length", type = "continuous",
 will be assumed that \code{ssv = NULL} was passed to \code{\link{gbpca}} or \code{\link{categorical.gbpca}}
 and all numeric variables in \code{df} will be used.}
 
-\item{outlier_removal_target}{Was outlier removal conducted for \code{target}?}
+\item{outlier_removal_target}{Was outlier removal conducted for \code{target}? If \code{type == "categorical"}
+this is set to \code{FALSE} automatically.}
 
 \item{outlier_removal_ssv}{Was outlier removal conducted for each \code{ssv}?}
 
-\item{good_end}{Are \code{"low"} or \code{"high"} values of \code{target} good?}
+\item{good_outcome}{Are \code{"low"} or \code{"high"} values of \code{target} good? Or, in
+case of a categorical \code{target} the name of the best category as a string.}
 
 \item{results_path}{Filepath to a .csv file containing results of \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
 
@@ -40,12 +42,15 @@ and all numeric variables in \code{df} will be used.}
 \item{validation_path}{R object containing the validated observations, i.e. first data frame returned by \code{\link{validate}}.}
 
 \item{validation_counts}{R object containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.}
+
+\item{validation_summary}{R object containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.}
 }
 \description{
 Takes results from a previous gbpca and automatically generates a html report
 for it.
 }
 \examples{
+## For continuous target
 ## If you want to create a new gbpca from scratch, this is the last step
 ## and relies on executing the other functions in this package first.
 ## Run gbpca
@@ -55,10 +60,13 @@ gbpca.regressions(iris, target = "Sepal.Length")
 ## Validate findings and store results
 x <- validate(iris, target = "Sepal.Length", causes = results$Causes, results_df = results)
 ## Split above results
-validatedObs <- as.data.frame(x[1])
-validationCounts <- as.data.frame(x[2])
+validatedObs <- x[[1]]
+validationCounts <- x[[2]]
+validationSummary <- x[[3]]
 ## Create report
-report(df = iris, target = "Sepal.Length", results_path = "results",
-validation = TRUE, validation_path = "validatedObs", validation_counts = "validationCounts")
+report(df = iris, target = "Sepal.Length", type = "continuous", good_outcome = "low",
+results_path = "results", validation = TRUE, validation_path = "validatedObs",
+validation_counts = "validationCounts", validation_summary = "validationSummary")
+
 
 }

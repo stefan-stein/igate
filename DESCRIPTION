@@ -1,7 +1,7 @@
 Package: gbpca
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
+Title: Perform gbpca, categorical gbpca and create standardised reports
+Version: 0.2.0
 Authors@R: person("Stefan", "Stein", email = "s.stein@warwick.ac.uk",
                   role = c("aut", "cre"))
 Description: More about what it does (maybe more than one line)

@@ -18,7 +18,7 @@ params:
   ssv:  !r c("a", "b", "c")
   outlier_removal_target: !r TRUE
   outlier_removal_ssv: !r TRUE
-  good_end: "low"
+  good_outcome: "low"
   results_path: "resultsIris"
   validation: !r FALSE
   validation_path: "validatedObsIris"
@@ -55,22 +55,14 @@ validation_summary <- get(params$validation_summary)
 
 ## Overview
 
-Using the `r params$df_name` data set, we conducted a `r params$versus` good versus `r params$versus` bad `r params$type` pairwise comparison analysis on `r Sys.Date()`. The target variable was `r params$target`. The goal of the analysis was to find process parameters in the `r params$df_name` data set that significantly influence the values of `r params$target`.
-For `r params$target`, *`r params$good_end`* values correspond to good values. 
-
-First, the counting method was conducted to obtain a preliminary selection of influential process parameters. Then, the `r follow_up_test` was used as a follow up test. The count obtained from the counting method and the p-value from the `r follow_up_test` have been recorded in the [Results] section.
-
-For the influential parameters good and bad control bands have been extracted. These are shown in the [Results] section.
-
-A sanity check was performed for the selected parameters by visually inspecting a regression plot of the ssv against the target and checking for a correlation. These plots can be found in the Appendix under [Regression Plots].
-
-The influential parameters and control bands `r if(params$validation){"have"}else{"have not yet"}` been validated.
+Using the `r params$df_name` data set, we conducted a `r params$versus` good versus `r params$versus` bad `r params$type` pairwise comparison analysis on `r Sys.Date()`. The target variable was the `r params$type` `r params$target`. The goal of the analysis was to find process parameters in the `r params$df_name` data set that significantly influence the values of `r params$target`.
+For `r params$target`, *`r params$good_outcome`* values correspond to good values. A list of all the parameters that were analysed can be found in the [Suspected Sources of Variation] section.
 
 The results and images are stored in `r params$image_directory`.
 
 ## Analysis
 
-Outlier removal for the target variable was `r if(params$outlier_removal_target){"conducted, giving the following results"}else{"not conducted"}`. 
+Outlier removal for the target variable was `r if(params$outlier_removal_target){"conducted, giving the following results"}else{"not conducted"}`. `r if(params$type == "categorical"){"Outlier removal for the target only makes sense if the target is continuous."}`
 
 ```{r, eval= params$outlier_removal_target, out.width='50%', fig.align='center', fig.cap='Boxplot of target variable.', fig.pos= 'h'}
 #Determine the filename of boxplot of target
@@ -79,23 +71,13 @@ filepath <- paste0(params$image_directory,"/Boxplot_of_", params$target,".png")
 knitr::include_graphics(filepath)
 ```
 
-The ssv's that were analysed are 
-```{r, message=FALSE}
-# We want a table with three columns listing the ssv analised
-ssv <- as.character(params$ssv)
-fill_up <- ifelse(length(ssv) %% 3 == 0, 0, 3 - (length(ssv) %% 3))
-list_ssv <- c(ssv,rep(NA,fill_up))
-ssv_matrix <- matrix(list_ssv, ncol = 3)
-options(knitr.kable.NA = '')
-kable(ssv_matrix,
-      caption = "Analysed ssv.",
-      longtable = TRUE,
-      booktabs = TRUE)%>%
-    kable_styling(latex_options = c("hold_position", "repeat_header"))%>%
-  column_spec(column = 1:3, width = "4cm")
+`r if(params$outlier_removal_target){"Then, the"}else{"First, the"}` counting method was conducted to obtain a preliminary selection of influential process parameters. Then, the `r follow_up_test` was used as a follow up test. The count obtained from the counting method and the p-value from the `r follow_up_test` have been recorded in the [Results] section.
 
-```
-Outlier removal for each ssv was `r if(params$outlier_removal_ssv){"conducted"}else{"not conducted"}`.
+For the influential parameters good and bad control bands have been extracted. These are shown in the [Results] section.
+
+A sanity check was performed for the selected parameters by visually inspecting a `r if(params$type == "continuous"){"regression plot of the ssv against the target and checking for a correlation."}else{"density plot and checking for a separation between good and bad categories."}` These plots can be found in the Appendix under [`r if(params$type == "continuous"){"Regression Plots"}else{"Density Plots"}`](#sanityCheck).
+
+The influential parameters and control bands `r if(params$validation){"have"}else{"have not yet"}` been validated. `r if(params$validation){"The results can be found in the Validation section."}`
 
 ## Results
 
@@ -144,24 +126,7 @@ kable(results[,c(1,4:7)],
 
 ## Validation
 
-The influential parameters and control bands `r if(params$validation){"have"}else{"have not yet"}` been validated.
-
-```{r}
-if(params$validation){
-validation <- validation[order(validation$expected_quality),]
-# number_bads <- validation%>%
-#   filter(quality == "bad")%>%
-#   nrow()
-# print(number_bads)
-# validation_length <- nrow(validation)
-kable(validation,
-      row.names = FALSE,
-      caption = 'The records of the validation data set that fall into all the good control bands resp. bad control bands.',
-      booktabs = TRUE,
-      longtable = TRUE)%>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
-}
-```
+The influential parameters and control bands `r if(params$validation){"have"}else{"have not yet"}` been validated. `r if(params$validation){"In the validation step the previous results are tested against a new data frame. From the new data frame all observations are extracted that fall either into all the good control bands or all the bad control bands of the ssv the user decided to keep. In this section a summary of the validation is presented. The list of all extracted observations and their expected quality can be found in the appendix."}`
 
 `r if((params$validation) && (params$type == "continuous")){"The table below summarizes the validation results. It shows the maximum and minimum observed value of the target variable for the observations with good expected quality and bad expected quality."}`
 `r if((params$validation) && (params$type == "categorical")){"The table below summarizes the validation results. It shows how frequently which category appears in the observations with good expected quality and bad expected quality."}`
@@ -170,7 +135,7 @@ kable(validation,
 if(params$validation){
 kable(validation_summary,
       row.names = FALSE,
-      caption = 'Summary of the table above.',
+      caption = 'Summary of validation step.',
       booktabs = TRUE,
       longtable = TRUE)%>%
   kable_styling(latex_options = c("hold_position", "repeat_header"))
@@ -191,13 +156,31 @@ if(params$validation){
 ```
 
 
-
-
 # Appendix
 
-## Regression Plots
+## Suspected Sources of Variation
 
-The regression plots that were used to determine the final selection of influential process parameters are shwon below.
+Outlier removal for each ssv was `r if(params$outlier_removal_ssv){"conducted"}else{"not conducted"}`. The ssv that were analysed are 
+```{r, message=FALSE}
+# We want a table with three columns listing the ssv analised
+ssv <- as.character(params$ssv)
+fill_up <- ifelse(length(ssv) %% 3 == 0, 0, 3 - (length(ssv) %% 3))
+list_ssv <- c(ssv,rep(NA,fill_up))
+ssv_matrix <- matrix(list_ssv, ncol = 3)
+options(knitr.kable.NA = '')
+kable(ssv_matrix,
+      caption = "Analysed ssv.",
+      longtable = TRUE,
+      booktabs = TRUE)%>%
+    kable_styling(latex_options = c("hold_position", "repeat_header"))%>%
+  column_spec(column = 1:3, width = "4cm")
+
+```
+
+
+## `r if(params$type == "continuous"){"Regression"}else{"Density"}` Plots {#sanityCheck}
+
+The `r if(params$type == "continuous"){"regression"}else{"density"}` plots that were used to determine the final selection of influential process parameters are shown below.
 
 ```{r, results='asis'}
 # # We want three plots per row
@@ -217,7 +200,24 @@ for (i in 1:length_causes) {
 ```
 
 
+## `r if(params$validation){"Validated Observations"}`
 
-
+`r if(params$validation){"The list of all observations extracted in the validation step."}`
+```{r}
+if(params$validation){
+validation <- validation[order(validation$expected_quality),]
+# number_bads <- validation%>%
+#   filter(quality == "bad")%>%
+#   nrow()
+# print(number_bads)
+# validation_length <- nrow(validation)
+kable(validation,
+      row.names = FALSE,
+      caption = 'The records of the validation data set that fall into all the good control bands resp. bad control bands.',
+      booktabs = TRUE,
+      longtable = TRUE)%>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+}
+```
 
 

@@ -76,7 +76,9 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr select filter contains arrange desc %>% group_by
+#' @importFrom stats median
+#' @importFrom utils capture.output
+#' @importFrom dplyr select filter contains arrange desc %>% group_by data_frame n summarise
 #'
 
 
