@@ -92,6 +92,9 @@ validate <- function(validation_df,
   if((type != "categorical") && (type != "continuous")){
     stop("Invalid type. Please use either 'categorical' or 'continuous'.")
   }
+  # This is only here to appease R CMD check
+  expected_quality <- NULL
+
   columns <- c(target, as.character(causes))
   relevant_columns <- validation_df%>%select(c(target, as.character(causes)))
   number_columns <- ncol(relevant_columns)

@@ -1,12 +1,13 @@
 Package: gbpca
 Type: Package
-Title: Perform gbpca, categorical gbpca and create standardised reports
-Version: 0.2.0
+Title: Perform Good/ Bad Pairwise Comparison Analysis and Create Standardised Reports
+Version: 0.2.1
 Authors@R: person("Stefan", "Stein", email = "s.stein@warwick.ac.uk",
                   role = c("aut", "cre"))
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: An implementation of the good/ bad pairwise comparison analysis 
+    framework. Methods are available for continuous and categorical target
+    variables as well as for generating a standardized report of the conducted analysis.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 2.10),
@@ -22,4 +23,5 @@ Suggests: knitr,
     kableExtra,
     pander,
     rmarkdown
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr

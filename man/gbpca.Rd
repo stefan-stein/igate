@@ -4,9 +4,9 @@
 \alias{gbpca}
 \title{gbpca function for continuous target variables}
 \usage{
-gbpca(df, versus = 8, target = "Sepal.Length", test = "w",
-  ssv = NULL, outlier_removal_target = TRUE,
-  outlier_removal_ssv = TRUE, good_end = "low")
+gbpca(df, versus = 8, target, test = "w", ssv = NULL,
+  outlier_removal_target = TRUE, outlier_removal_ssv = TRUE,
+  good_end = "low")
 }
 \arguments{
 \item{df}{Data frame to be analysed.}

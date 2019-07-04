@@ -51,10 +51,17 @@
 
 
 categorical.freqplot <- function(df,
-                                 target = "cyl",
+                                 target,
                                  ssv =NULL,
                                  outlier_removal_ssv = TRUE){
 
+  if(sum(names(df) == target) != 1){
+    stop(paste0(target,
+                " is not a valid column name for ",
+                deparse(substitute(df)),
+                ".\nGot sum(names(df) == target) = ", sum(names(df) == target),
+                ", but need 1."))
+  }
   # If numeric, convert it first!
   if(is.numeric(df[[target]])){
     df[[target]] <- as.character(df[[target]])

@@ -48,11 +48,18 @@
 
 
 gbpca.regressions <- function(df,
-                                target = "Sepal.Length",
+                                target,
                                 ssv =NULL,
                                 outlier_removal_target = TRUE,
                                 outlier_removal_ssv = TRUE){
 
+  if(sum(names(df) == target) != 1){
+    stop(paste0(target,
+                " is not a valid column name for ",
+                deparse(substitute(df)),
+                ".\nGot sum(names(df) == target) = ", sum(names(df) == target),
+                ", but need 1."))
+  }
   # Remove outliers
   if(outlier_removal_target){
     box_stats <- boxplot.stats(df[[target]]) #we need this as extra variable tp keep track of removed records (we overwrite df)

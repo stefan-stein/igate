@@ -4,9 +4,9 @@
 \alias{robust.categorical.gbpca}
 \title{Robust gbpca for categorical target variables}
 \usage{
-robust.categorical.gbpca(df, versus = 8, target = "cyl",
-  best.cat = "8", worst.cat = "4", test = "w", ssv = NULL,
-  outlier_removal_ssv = TRUE, iterations = 50, threshold = 0.5)
+robust.categorical.gbpca(df, versus = 8, target, best.cat, worst.cat,
+  test = "w", ssv = NULL, outlier_removal_ssv = TRUE,
+  iterations = 50, threshold = 0.5)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}

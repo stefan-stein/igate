@@ -101,7 +101,7 @@
 
 gbpca <- function(df,
                              versus = 8,
-                             target = "Sepal.Length",
+                             target,
                              test = "w",
                              ssv = NULL,
                              outlier_removal_target = TRUE,
@@ -112,6 +112,13 @@ gbpca <- function(df,
 
 # Preparations ------------------------------------------------------------
 
+  if(sum(names(df) == target) != 1){
+    stop(paste0(target,
+               " is not a valid column name for ",
+               deparse(substitute(df)),
+               ".\nGot sum(names(df) == target) = ", sum(names(df) == target),
+               ", but need 1."))
+  }
   # Remove columns with only missing values
   df <- df[,colSums(is.na(df)) < nrow(df)]
 
@@ -124,7 +131,8 @@ gbpca <- function(df,
     boxplot(df[[target]], xlab = target,
             main = paste0("Boxplot of ", target, ", containing ", length(box_stats$out), " outliers." ) )
     dev.off()
-    df <- df%>%dplyr::filter(df[[target]] <= box_stats$stats[5])
+    df <- df%>%dplyr::filter(df[[target]] <= box_stats$stats[5] &
+                             df[[target]] >= box_stats$stats[1])
     print(paste0(length(box_stats$out), " outliers have been removed."))
     print(paste0("Retaining ", length(df[[target]]), " observations."))
 
@@ -191,17 +199,20 @@ gbpca <- function(df,
 
   # Dynamically select BOB and WOW
   for(i in 1:l_ssv){
-    #print(names(df_clean[i]))
+
     BOB.WOW_i <- data.frame(Big_Y = df[[target]], df_clean[,i])
     # Remove all missing records
     na_removed[i] <- sum(is.na(BOB.WOW_i[,2]))
     BOB.WOW_i <- BOB.WOW_i[!is.na(BOB.WOW_i[,2]),]
+    if(nrow(BOB.WOW_i) < 2*versus){
+      print(paste("Not enough non-missing values for", ssv[i]))
+      next
+    }
     #Outlier removal for ssv
     if(outlier_removal_ssv){
       box_stats <- boxplot.stats(unlist(BOB.WOW_i[,2]))
       BOB.WOW_i <- BOB.WOW_i[BOB.WOW_i[,2] >= box_stats$stats[1]
                              & BOB.WOW_i[,2] <= box_stats$stats[5],]
-      #print(paste0("For ", ssv[i], " retain ", nrow(BOB.WOW_i), " obs after ssv based outlier removal."))
     }
 
     #Select versus obs at lower end and upper end

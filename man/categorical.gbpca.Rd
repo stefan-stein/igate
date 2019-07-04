@@ -4,9 +4,8 @@
 \alias{categorical.gbpca}
 \title{gbpca function for categorical target variables}
 \usage{
-categorical.gbpca(df, versus = 8, target = "cyl", best.cat = "8",
-  worst.cat = "4", test = "w", ssv = NULL,
-  outlier_removal_ssv = TRUE)
+categorical.gbpca(df, versus = 8, target, best.cat, worst.cat,
+  test = "w", ssv = NULL, outlier_removal_ssv = TRUE)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}

@@ -85,14 +85,26 @@
 
 robust.categorical.gbpca <- function(df,
                                      versus = 8,
-                                     target = "cyl",
-                                     best.cat = "8",
-                                     worst.cat = "4",
+                                     target,
+                                     best.cat,
+                                     worst.cat,
                                      test = "w",
                                      ssv = NULL,
                                      outlier_removal_ssv = TRUE,
                                      iterations = 50,
                                      threshold = 0.5){
+
+  if(sum(names(df) == target) != 1){
+    stop(paste0(target,
+                " is not a valid column name for ",
+                deparse(substitute(df)),
+                ".\nGot sum(names(df) == target) = ", sum(names(df) == target),
+                ", but need 1."))
+  }
+
+  # These two lines are only here to appease R CMD check
+  Causes <- Frequency <- Count <- p.values <- median_count <- NULL
+  good_lower_bound <- good_upper_bound <- bad_lower_bound <- bad_upper_bound <- NULL
 
   results <- data_frame()
   for (i in 1:iterations) {

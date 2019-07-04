@@ -4,7 +4,7 @@
 \alias{gbpca.regressions}
 \title{Produces the regression plots for sanity check in GBPCA}
 \usage{
-gbpca.regressions(df, target = "Sepal.Length", ssv = NULL,
+gbpca.regressions(df, target, ssv = NULL,
   outlier_removal_target = TRUE, outlier_removal_ssv = TRUE)
 }
 \arguments{
