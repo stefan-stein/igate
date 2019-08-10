@@ -1,7 +1,7 @@
 Package: igate
 Type: Package
 Title: Perform Good/ Bad Pairwise Comparison Analysis and Create Standardised Reports
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: person("Stefan", "Stein", email = "s.stein@warwick.ac.uk",
                   role = c("aut", "cre"))
 Description: An implementation of the good/ bad pairwise comparison analysis 

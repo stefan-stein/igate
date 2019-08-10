@@ -74,7 +74,7 @@ report <- function(df,
   }
   if(type == "categorical"){outlier_removal_target <- FALSE}
 
-  path_to_markdown <- system.file("rmd", "Good_Bad_Report.Rmd", package = "igate")
+  path_to_markdown <- system.file("rmd", "iGATE_Report.Rmd", package = "igate")
   image_directory <- getwd()
   print(image_directory)
   rmarkdown::render(path_to_markdown,

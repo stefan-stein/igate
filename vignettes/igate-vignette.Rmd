@@ -19,13 +19,13 @@ knitr::opts_chunk$set(
 
 # Methodology
 
-igate is a package to conduct Good-Bad Pairwise Comparison Analysis (iGATE) on manufacturing data. The goal of iGATE is to enable *guided analytics* in industry, that is, to provide a statistically sound framework for process optimization that is easy enough to be used and understood by employees without statistical training. The goal is to have simplicity and interpretability while maintaining statistical rigor.
+The igate package implements the **i**nitial **G**uided **A**nalytics for parameter **T**esting and controland **E**xtraction (iGATE) framework for manufacturing data. The goal of iGATE is to enable *guided analytics* in industry, that is, to provide a statistically sound framework for process optimization that is easy enough to be used and understood by employees without statistical training. The goal is to have simplicity and interpretability while maintaining statistical rigor.
 
 Having identified a manufacturing ‘problem’ to be investigated, a data set is assembled for a ‘typical’ period of
 operation, i.e. excluding known disturbances such as maintenance or equipment failures. This
 data set includes the so called *target variable*, a direct indication or proxy for the problem under
-consideration, and a number of parameters representing *suspected sources of variation*
-(SSVs). Parameters with known and explainable relationships with the target variable should be
+consideration and the variale whose variation we want to explain, and a number of parameters representing *suspected sources of variation*
+(SSVs), i.e. variables that we consider potentially influetial for the value of the `target`. Parameters with known and explainable relationships with the target variable should be
 excluded from the analysis, although this can be addressed in an iterative manner though
 subsequent exclusion and repeating of the process. Care has been taken to robustify the approach against outliers and missing data, in order to make it a reliable tool that can be used with possibly messy or incomplete real-world data sets. The iGATE procedure consists of the following steps (detailed explanations follow below):
 
@@ -38,23 +38,23 @@ subsequent exclusion and repeating of the process. Care has been taken to robust
 1. Report findings in standardized format.
 
 Steps 1-4 are performed using the `igate` function for continuous target variables or the `categorical.igate` function for categorical target variables. Especially for categorical targets with few categories `robust.categorical.igate` is a robustified version of `categorical.igate` and should be considered.
-In the basic method, any remaining outliers for the target variable are excluded and the best 8
-(B) and worst 8 (W) target variable cases from the residual data set are identified. For each of
-these 16 cases, each SSV is inspected in turn to inspect the distribution of their values with
-respect to the 8 B and W classes. The Tukey-Duckworth test [@tukeycompacttest59] is applied to assess this relationship and outcomes of this greater than a specific value (6; this corresponds to a p-value of less than 0.05) are retained as being potentially significant. This test was chosen for its simplicity and ease of interpretation and visualization. SSVs failing the test are highly unlikely to be influential whilst SSVs
+
+When running `igate`/ `categorical.igate` with default settings, any outliers for the target variable are excluded and the observations corresponding to the best 8 (B) and worst 8 (W) instances of the target variable are identified. For each of
+these 16 observations, each SSV is inspected in turn. The distribution of the values of the SSV of the 8 BOB and 8 WOW are analyzed by applying the Tukey-Duckworth test [@tukeycompacttest59]. If the critical value returned by the test is larger than 6 (this corresponds to a p-value of less than 0.05), the SSV is retained as being potentially significant.
+This test was chosen for its simplicity and ease of interpretation and visualization. SSVs failing the test are highly unlikely to be influential whilst SSVs
 passing the test may be influential. The Wilcoxon-Rank test performed in step three of iGATE serves as a possibly more widely known alternative, that might, however, be harder to explain to non-statisticians. The main function of these steps is to facilitate dimensionality reduction in the data set to generate a manageable population for expert consideration.
 
-Step 5 is performed by calling `igate.regressions`, resp. `categorical.freqplot`. These functions produce a regression (for continuous target) resp. frequency (for categorical targets) plot and save it to the current working directory. The domain expert should review these plots and decide on which parameters to keep for further analysis based on goodness of fit of the data to the plot.
+Step 5 is performed by calling `igate.regressions`, resp. `categorical.freqplot`. These functions produce a regression (for continuous target) resp. frequency (for categorical targets) plot and save it to the current working directory. The domain expert should review these plots and decide which parameters to keep for further analysis based on goodness of fit of the data to the plot.
 
-For the validation step the production period from which the validation data is selected is dependent on the business situation but should be from a period of operation consistent with that from which the initial
+For the validation step, the production period from which the validation data is selected is dependent on the business situation, but should be from a period of operation consistent with that from which the initial
 population was drawn, i.e. similar product types, similar level of equipment status etc. The
 validation step then considers all the retained SSV as a collective in terms of good and bad
 bands, and extracts from the validation sample all the records which satisfy the condition that all
 retained SSVs lie within these bands. The expectation is that where all the SSVs lie within the
 good band, then the target should also correspond to the best performance, and vice versa
-where the retained SSVs all lie in the bad bands. The application gives feedback on extent to
-which this criterion is satisfied in order to help the user to conclude the exploration and make
-recommendations for subsequent improvements. Validation is performed with the `validate` function.
+where the retained SSVs all lie in the bad bands we expect to see bad performance. The application gives feedback on the extent to
+which this criterion is satisfied in order to help the user conclude the exploration and make
+recommendations for subsequent improvements. Validation is performed via the `validate` function.
 
 We consider the last step, the reporting of the results in a standardized manner, an integral part of iGATE that ensures that knowledge about past analyses is retained within a company. This is achieved by calling the `report` function.
 

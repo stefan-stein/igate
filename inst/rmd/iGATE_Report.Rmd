@@ -1,5 +1,5 @@
 ---
-title: "Good/ Bad Pairwise Comparison Analysis Report"
+title: "iGATE Report"
 date: "`r format(Sys.time(), '%d/%m/%Y')`"
 header-includes:
    - \usepackage{longtable}
@@ -71,7 +71,7 @@ filepath <- paste0(params$image_directory,"/Boxplot_of_", params$target,".png")
 knitr::include_graphics(filepath)
 ```
 
-`r if(params$outlier_removal_target){"Then, the"}else{"First, the"}` counting method was conducted to obtain a preliminary selection of influential process parameters. Then, the `r follow_up_test` was used as a follow up test. The count obtained from the counting method and the p-value from the `r follow_up_test` have been recorded in the [Results] section.
+`r if(params$outlier_removal_target){"Then, the"}else{"First, the"}` Tukey-Duckworth test was conducted to obtain a preliminary selection of potentially influential process parameters. Then, the `r follow_up_test` was used as a follow up test. The count obtained from the counting method and the p-value from the `r follow_up_test` have been recorded in the [Results] section.
 
 For the influential parameters good and bad control bands have been extracted. These are shown in the [Results] section.
 
@@ -82,7 +82,7 @@ The influential parameters and control bands `r if(params$validation){"have"}els
 ## Results
 
 
-The counting method and `r follow_up_test` produced the following results.
+The Tukey-Duckworth test and `r follow_up_test` produced the following results.
 
 ```{r countsandps}
 # pander(results[,1:3],
@@ -101,7 +101,7 @@ kable(results[,1:3],
 
 \blandscape
 
-The counting method and `r follow_up_test` produced the following results.
+The Tukey-Duckworth test and `r follow_up_test` produced the following results.
 
 ```{r controlbands}
 #Only print bands for kept SSV.

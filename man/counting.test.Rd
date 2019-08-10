@@ -44,7 +44,6 @@ within that cluser are \code{good_band_lower_bound} and
 \code{good_band_upper_bound}. We proceed with group \code{W} respectively. If
 no such clusters form at the end of the ordered list, the control bands are
 set to -1.
-See also \url{https://www.jstor.org/stable/1266308} for Tukey's original paper.
 }
 \examples{
 B <- 1:8
