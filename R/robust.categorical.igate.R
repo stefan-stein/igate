@@ -1,17 +1,17 @@
-# GBPCA for categorical variables -----------------------------------------
+# iGATE for categorical variables -----------------------------------------
 
 # Outlier removal for categorical target makes no sense
 
-#' Robust gbpca for categorical target variables
+#' Robust igate for categorical target variables
 #'
 #' This function performs a robust good/bad - pairwise comparison analysis for a categorical target variable
-#' by repeatedly running \code{categorical.gbpca} and only returning those parameters that are selected more often than a
+#' by repeatedly running \code{categorical.igate} and only returning those parameters that are selected more often than a
 #' certain threshold.
 #'
 #' @param df Data frame to be analysed.
 #' @param versus How many Best of the Best and Worst of the Worst do we collect? By default, we will collect 8 of each.
 #' @param target Target variable to be analysed. Must be categorical.
-#' Use \code{\link{gbpca}} for continuous \code{target}.
+#' Use \code{\link{igate}} for continuous \code{target}.
 #' @param best.cat The best category. The \code{versus} BOB will be selected randomly from this
 #' category.
 #' @param worst.cat The worst category. The \code{versus} WOW will be selected randomly from this
@@ -24,7 +24,7 @@
 #' will be tested. If no list of \code{ssv} is provided, the test will be performed
 #' on all numeric variables.
 #' @param outlier_removal_ssv Logical. Should outlier removal be performed for each \code{ssv} (default: \code{TRUE})?
-#' @param iterations Integer. How often should categorical.gbpca be performed?
+#' @param iterations Integer. How often should categorical.igate be performed?
 #' @param threshold Between 0 and 1. Only parameters that are selected at least \code{floor(iterations*threshold)}
 #' times are returned.
 #'
@@ -51,7 +51,7 @@
 #' observations from the the best category (“Best of the Best”, short BOB)  and
 #' \code{versus} observations from the worst category
 #' (“Worst of the Worst”, short WOW). By default, we select 8 of each. Since this selection
-#' happens randomly, it is recommended to use \code{robust.categorical.gbpca} over \code{\link{categorical.gbpca}}.
+#' happens randomly, it is recommended to use \code{robust.categorical.igate} over \code{\link{categorical.igate}}.
 #' After the selection we compare BOB and WOW using the the counting method and the specified
 #' hypothesis test. If the distributions of the \code{ssv} in BOB and WOW are
 #' significantly different, the current \code{ssv} has been identified as influential
@@ -71,7 +71,7 @@
 #' the \code{target} is likely to be good. If it is in the interval
 #' [\code{bad_lower_bound},\code{bad_upper_bound}], the \code{target} is likely to be bad.
 #'
-#' @examples robust.categorical.gbpca(mtcars, target = "cyl",
+#' @examples robust.categorical.igate(mtcars, target = "cyl",
 #' best.cat = "8", worst.cat = "4", iterations = 50, threshold = 0.5)
 #'
 #' @export
@@ -83,7 +83,7 @@
 
 
 
-robust.categorical.gbpca <- function(df,
+robust.categorical.igate <- function(df,
                                      versus = 8,
                                      target,
                                      best.cat,
@@ -109,8 +109,8 @@ robust.categorical.gbpca <- function(df,
   results <- data_frame()
   for (i in 1:iterations) {
     if(i %% floor(0.1*iterations) == 0){print(paste0("Iteration ", i))}
-    # To suppress console output by categorical.gbpca
-    dummy <- capture.output(res <- categorical.gbpca(df, versus, target, best.cat, worst.cat, test, ssv, outlier_removal_ssv))
+    # To suppress console output by categorical.igate
+    dummy <- capture.output(res <- categorical.igate(df, versus, target, best.cat, worst.cat, test, ssv, outlier_removal_ssv))
 
     results <- rbind(results, res)
     rm(dummy, res)

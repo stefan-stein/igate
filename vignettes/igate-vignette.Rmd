@@ -1,11 +1,11 @@
 ---
-title: "A short introduction to the GBPCA framework with R"
+title: "A short introduction to the iGATE framework with R"
 author: "Stefan Stein"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
-bibliography: gbpca.bib
+bibliography: igate.bib
 vignette: >
-  %\VignetteIndexEntry{A short introduction to the GBPCA framework with R}
+  %\VignetteIndexEntry{A short introduction to the iGATE framework with R}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 # Methodology
 
-Gbpca is a package to conduct Good-Bad Pairwise Comparison Analysis (GBPCA) on manufacturing data. The goal of GBPCA is to enable *guided analytics* in industry, that is, to provide a statistically sound framework for process optimization that is easy enough to be used and understood by employees without statistical training. The goal is to have simplicity and interpretability while maintaining statistical rigor.
+igate is a package to conduct Good-Bad Pairwise Comparison Analysis (iGATE) on manufacturing data. The goal of iGATE is to enable *guided analytics* in industry, that is, to provide a statistically sound framework for process optimization that is easy enough to be used and understood by employees without statistical training. The goal is to have simplicity and interpretability while maintaining statistical rigor.
 
 Having identified a manufacturing ‘problem’ to be investigated, a data set is assembled for a ‘typical’ period of
 operation, i.e. excluding known disturbances such as maintenance or equipment failures. This
@@ -27,9 +27,9 @@ data set includes the so called *target variable*, a direct indication or proxy 
 consideration, and a number of parameters representing *suspected sources of variation*
 (SSVs). Parameters with known and explainable relationships with the target variable should be
 excluded from the analysis, although this can be addressed in an iterative manner though
-subsequent exclusion and repeating of the process. Care has been taken to robustify the approach against outliers and missing data, in order to make it a reliable tool that can be used with possibly messy or incomplete real-world data sets. The GBPCA procedure consists of the following steps (detailed explanations follow below):
+subsequent exclusion and repeating of the process. Care has been taken to robustify the approach against outliers and missing data, in order to make it a reliable tool that can be used with possibly messy or incomplete real-world data sets. The iGATE procedure consists of the following steps (detailed explanations follow below):
 
-1. Select 8 Best of the Best (BOB) and 8 Worst of the Worst (WOW) products. The number of observations chosen can be changed using the `versus` argument of `gbpca`/ `categorical.gbpca`.
+1. Select 8 Best of the Best (BOB) and 8 Worst of the Worst (WOW) products. The number of observations chosen can be changed using the `versus` argument of `igate`/ `categorical.igate`.
 1. Perform the Tukey-Duckworth test for each SSV (see details below).
 1. For each SSV selected by the said test, perform Wilcoxon Rank test.
 1. Extract upper/ lower control limit for kept parameters.
@@ -37,14 +37,14 @@ subsequent exclusion and repeating of the process. Care has been taken to robust
 1. Validate choice of parameters and control limits.
 1. Report findings in standardized format.
 
-Steps 1-4 are performed using the `gbpca` function for continuous target variables or the `categorical.gbpca` function for categorical target variables. Especially for categorical targets with few categories `robust.categorical.gbpca` is a robustified version of `categorical.gbpca` and should be considered.
+Steps 1-4 are performed using the `igate` function for continuous target variables or the `categorical.igate` function for categorical target variables. Especially for categorical targets with few categories `robust.categorical.igate` is a robustified version of `categorical.igate` and should be considered.
 In the basic method, any remaining outliers for the target variable are excluded and the best 8
 (B) and worst 8 (W) target variable cases from the residual data set are identified. For each of
 these 16 cases, each SSV is inspected in turn to inspect the distribution of their values with
 respect to the 8 B and W classes. The Tukey-Duckworth test [@tukeycompacttest59] is applied to assess this relationship and outcomes of this greater than a specific value (6; this corresponds to a p-value of less than 0.05) are retained as being potentially significant. This test was chosen for its simplicity and ease of interpretation and visualization. SSVs failing the test are highly unlikely to be influential whilst SSVs
-passing the test may be influential. The Wilcoxon-Rank test performed in step three of GBPCA serves as a possibly more widely known alternative, that might, however, be harder to explain to non-statisticians. The main function of these steps is to facilitate dimensionality reduction in the data set to generate a manageable population for expert consideration.
+passing the test may be influential. The Wilcoxon-Rank test performed in step three of iGATE serves as a possibly more widely known alternative, that might, however, be harder to explain to non-statisticians. The main function of these steps is to facilitate dimensionality reduction in the data set to generate a manageable population for expert consideration.
 
-Step 5 is performed by calling `gbpca.regressions`, resp. `categorical.freqplot`. These functions produce a regression (for continuous target) resp. frequency (for categorical targets) plot and save it to the current working directory. The domain expert should review these plots and decide on which parameters to keep for further analysis based on goodness of fit of the data to the plot.
+Step 5 is performed by calling `igate.regressions`, resp. `categorical.freqplot`. These functions produce a regression (for continuous target) resp. frequency (for categorical targets) plot and save it to the current working directory. The domain expert should review these plots and decide on which parameters to keep for further analysis based on goodness of fit of the data to the plot.
 
 For the validation step the production period from which the validation data is selected is dependent on the business situation but should be from a period of operation consistent with that from which the initial
 population was drawn, i.e. similar product types, similar level of equipment status etc. The
@@ -56,23 +56,23 @@ where the retained SSVs all lie in the bad bands. The application gives feedback
 which this criterion is satisfied in order to help the user to conclude the exploration and make
 recommendations for subsequent improvements. Validation is performed with the `validate` function.
 
-We consider the last step, the reporting of the results in a standardized manner, an integral part of GBPCA that ensures that knowledge about past analyses is retained within a company. This is achieved by calling the `report` function.
+We consider the last step, the reporting of the results in a standardized manner, an integral part of iGATE that ensures that knowledge about past analyses is retained within a company. This is achieved by calling the `report` function.
 
 ## Getting started
 
-Install `gbpca` just like any other R package directly from CRAN and load it afterwards by running
+Install `igate` just like any other R package directly from CRAN and load it afterwards by running
 ```{r, eval=FALSE}
-install.packages("gbpca")
-library(gbpca)
+install.packages("igate")
+library(igate)
 ```
 
-We recommend changing the working directory to a new, empty directory, as various functions in the `gbpca` package will save plots to the current working directory. The working directory can be changed using the `setwd()` function or, when using R Studio, via clicking *Session -> Set Working Directory -> Choose Directory*. 
+We recommend changing the working directory to a new, empty directory, as various functions in the `igate` package will save plots to the current working directory. The working directory can be changed using the `setwd()` function or, when using R Studio, via clicking *Session -> Set Working Directory -> Choose Directory*. 
 
 ## An example for continuous target
 
-We use the `iris` data as an example for performing gbpca on a continuous target.
+We use the `iris` data as an example for performing igate on a continuous target.
 ```{r, include=FALSE}
-library(gbpca)
+library(igate)
 ```
 
 
@@ -81,15 +81,15 @@ set.seed(123)
 n <- nrow(iris)*2/3
 rows <- sample(1:nrow(iris), n)
 df <- iris[rows, ]
-results <- gbpca(df, target = "Sepal.Length", good_end = "high")
+results <- igate(df, target = "Sepal.Length", good_end = "high")
 results
 ```
 
-The significant variables are shown alongside their count summary statistic from the Tukey-Duckworth Test as well as the p-value from the Wilcoxon-Rank test. Also, we see the good and bad control bands as well as several summary statistics to ascertain the randomness in the results (see documentation of `gbpca` for details).
+The significant variables are shown alongside their count summary statistic from the Tukey-Duckworth Test as well as the p-value from the Wilcoxon-Rank test. Also, we see the good and bad control bands as well as several summary statistics to ascertain the randomness in the results (see documentation of `igate` for details).
 
 Next, we perform a sanity check for the found results
 ```{r}
-gbpca.regressions(df, target = "Sepal.Length", ssv = results$Causes)
+igate.regressions(df, target = "Sepal.Length", ssv = results$Causes)
 ```
 
 A data frame is output, showing us that the regression succeeded (column `regression_plot`) for both SSV as well as displaying the respective $r^2$ value, gradient and intercept values etc. This function also saves a regression plot for each SSV against the target into the current working directory. Upon visual inspection, the expert can decide if they want to keep the SSV for further analysis or not.
@@ -99,7 +99,7 @@ validation_df <- iris[-rows,]
 val <- validate(iris, target = "Sepal.Length", causes = results$Causes, results_df = results)
 ```
 
-If the type (continuous or categorical) of gbpca to be validated is not specified, `validate` will guess it automatically. The output `val` is a list of three data frames: The first contains all the observations in the validation data set falling into all the good resp. all the bad control bands plus an additional column `expected_quality`, indicating whether the observation falls into the good or the bad band.
+If the type (continuous or categorical) of igate to be validated is not specified, `validate` will guess it automatically. The output `val` is a list of three data frames: The first contains all the observations in the validation data set falling into all the good resp. all the bad control bands plus an additional column `expected_quality`, indicating whether the observation falls into the good or the bad band.
 
 ```{r}
 head(val[[1]])
@@ -139,7 +139,7 @@ report(df = df,
 
 This will create a html file titled "Good_Bad_Report.html" in the current working directory.
 
-Using gbpca for categorical target variables is completely analogous, simply run `categorical.gbpca` and `categorical.freqplot` instead of `gbpca` and `gbpca.regressions`.
+Using igate for categorical target variables is completely analogous, simply run `categorical.igate` and `categorical.freqplot` instead of `igate` and `igate.regressions`.
 
 ## References
 

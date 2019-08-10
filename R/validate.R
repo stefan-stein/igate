@@ -1,24 +1,24 @@
-# Validation function after performing gbpca
+# Validation function after performing igate
 
 
 
-#' Validates results after using \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
+#' Validates results after using \code{\link{igate}} or \code{\link{categorical.igate}}.
 #'
 #' Takes a new data frame to be used for validation and the causes and control bands
-#' obtained from \code{\link{gbpca}} or \code{\link{categorical.gbpca}} and returns
+#' obtained from \code{\link{igate}} or \code{\link{categorical.igate}} and returns
 #' all those observations that fall within these control bands.
 #'
 #' @param validation_df Data frame to be used for validation. It is recommended to use
-#' a different data frame from the one used in \code{\link{gbpca}}/ \code{\link{categorical.gbpca}}.
+#' a different data frame from the one used in \code{\link{igate}}/ \code{\link{categorical.igate}}.
 #' The same data frame can be used if just a sanity check of the results is performed. This
 #' data frame must contain the \code{target} variable as well as all the causes determined
-#' by \code{\link{gbpca}}/ \code{\link{categorical.gbpca}}.
-#' @param target Target variable that was used in \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
-#' @param causes Causes determined by \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
-#' If you saved the results of \code{\link{gbpca}}/ \code{\link{categorical.gbpca}} in an object
+#' by \code{\link{igate}}/ \code{\link{categorical.igate}}.
+#' @param target Target variable that was used in \code{\link{igate}} or \code{\link{categorical.igate}}.
+#' @param causes Causes determined by \code{\link{igate}} or \code{\link{categorical.igate}}.
+#' If you saved the results of \code{\link{igate}}/ \code{\link{categorical.igate}} in an object
 #' \code{results}, simply use \code{results$Causes} here.
-#' @param results_df The data frame containing the results of \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
-#' @param type The type of gbpca that was performed: either \code{"continuous"} or \code{"categorical"}. If not provided
+#' @param results_df The data frame containing the results of \code{\link{igate}} or \code{\link{categorical.igate}}.
+#' @param type The type of igate that was performed: either \code{"continuous"} or \code{"categorical"}. If not provided
 #' function will try to guess the correct type based on the type of \code{validation_df[[target]]}.
 #'
 #' @return A list of three data frames is returned. The first data frame contains those observations
@@ -71,15 +71,15 @@ validate <- function(validation_df,
                      type = NULL){
   if(is.null(type)){
     if(is.numeric(validation_df[[target]]) && !is.factor(validation_df[[target]])){
-      print("Guessing that perfromed gbpca was continuous. Using type = 'continuous'.")
+      print("Guessing that perfromed igate was continuous. Using type = 'continuous'.")
       type <- "continuous"
     }
     else if(is.character(validation_df[[target]]) || is.factor(validation_df[[target]])){
-      print("Guessing that perfromed gbpca was categorical. Using type = 'categorical'.")
+      print("Guessing that perfromed igate was categorical. Using type = 'categorical'.")
       type <- "categorical"
     }
     else{
-      print("Sorry, was not able to guess type of gbpca. Please specify type as either 'continuous' or 'categorical'.")
+      print("Sorry, was not able to guess type of igate. Please specify type as either 'continuous' or 'categorical'.")
     }
   }
   # Check that type of target and specified type fit

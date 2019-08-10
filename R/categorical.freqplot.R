@@ -2,7 +2,7 @@
 
 
 #'Produces frequency plots (normed to density plots to account for
-#'different category sizes) for sanity check in categorical GBPCA.
+#'different category sizes) for sanity check in categorical iGATE.
 #'
 #'This function takes a data frame, a categorical target variable and a list of ssv and
 #'produces a density plot of each ssv and each category of the target variable. The output is written as

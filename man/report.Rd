@@ -2,7 +2,7 @@
 % Please edit documentation in R/report.R
 \name{report}
 \alias{report}
-\title{Generates report about a conducted gbpca.}
+\title{Generates report about a conducted igate.}
 \usage{
 report(df, versus = 8, target = "Sepal.Length", type = "continuous",
   test = "w", ssv = NULL, outlier_removal_target = TRUE,
@@ -13,18 +13,18 @@ report(df, versus = 8, target = "Sepal.Length", type = "continuous",
   validation_summary = "validationSummaryIris")
 }
 \arguments{
-\item{df}{The data frame that was analysed with \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
+\item{df}{The data frame that was analysed with \code{\link{igate}} or \code{\link{categorical.igate}}.}
 
 \item{versus}{What value of \code{versus} was used?}
 
 \item{target}{What \code{target} was used?}
 
-\item{type}{Was \code{\link{gbpca}} (use \code{type = "continuous"}) or \code{\link{categorical.gbpca}} (use \code{type = "categorical"}) conducted?}
+\item{type}{Was \code{\link{igate}} (use \code{type = "continuous"}) or \code{\link{categorical.igate}} (use \code{type = "categorical"}) conducted?}
 
 \item{test}{Which hypothesis test was used alongside the counting method?}
 
 \item{ssv}{Which \code{ssv} have been used in the analysis? If \code{NULL}, it
-will be assumed that \code{ssv = NULL} was passed to \code{\link{gbpca}} or \code{\link{categorical.gbpca}}
+will be assumed that \code{ssv = NULL} was passed to \code{\link{igate}} or \code{\link{categorical.igate}}
 and all numeric variables in \code{df} will be used.}
 
 \item{outlier_removal_target}{Was outlier removal conducted for \code{target}? If \code{type == "categorical"}
@@ -35,7 +35,7 @@ this is set to \code{FALSE} automatically.}
 \item{good_outcome}{Are \code{"low"} or \code{"high"} values of \code{target} good? Or, in
 case of a categorical \code{target} the name of the best category as a string.}
 
-\item{results_path}{Filepath to a .csv file containing results of \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
+\item{results_path}{Filepath to a .csv file containing results of \code{\link{igate}} or \code{\link{categorical.igate}}.}
 
 \item{validation}{Logical. Has validation of the results been performed?}
 
@@ -46,17 +46,17 @@ case of a categorical \code{target} the name of the best category as a string.}
 \item{validation_summary}{R object containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.}
 }
 \description{
-Takes results from a previous gbpca and automatically generates a html report
+Takes results from a previous igate and automatically generates a html report
 for it.
 }
 \examples{
 ## For continuous target
-## If you want to create a new gbpca from scratch, this is the last step
+## If you want to create a new igate from scratch, this is the last step
 ## and relies on executing the other functions in this package first.
-## Run gbpca
-results <- gbpca(iris, target = "Sepal.Length")
+## Run igate
+results <- igate(iris, target = "Sepal.Length")
 ## Produce regression plots
-gbpca.regressions(iris, target = "Sepal.Length")
+igate.regressions(iris, target = "Sepal.Length")
 ## Validate findings and store results
 x <- validate(iris, target = "Sepal.Length", causes = results$Causes, results_df = results)
 ## Split above results

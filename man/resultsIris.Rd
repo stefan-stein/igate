@@ -4,12 +4,12 @@
 \name{resultsIris}
 \alias{resultsIris}
 \title{Example results data file to be used for example report generation.}
-\format{A data frame as described in the documentation of \code{\link{gbpca}}.}
+\format{A data frame as described in the documentation of \code{\link{igate}}.}
 \usage{
 resultsIris
 }
 \description{
 This is the output of
-\code{resultsIris <- gbpca(iris, target = "Sepal.Length")}
+\code{resultsIris <- igate(iris, target = "Sepal.Length")}
 }
 \keyword{datasets}

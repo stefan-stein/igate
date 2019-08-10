@@ -1,6 +1,6 @@
 # Regression analysis -----------------------------------------------------
 
-#'Produces the regression plots for sanity check in GBPCA
+#'Produces the regression plots for sanity check in iGATE
 #'
 #'This function takes a data frame, a target variable and a list of ssv and
 #'produces a regression plot of each ssv against the target. The output is written as
@@ -38,7 +38,7 @@
 #'svaed to current working directory. Also a data frame with summary statistics is produced,
 #'see \bold{Value} for details.
 #'
-#' @examples gbpca.regressions(iris, target = "Sepal.Length")
+#' @examples igate.regressions(iris, target = "Sepal.Length")
 #'
 #' @export
 #'
@@ -47,7 +47,7 @@
 
 
 
-gbpca.regressions <- function(df,
+igate.regressions <- function(df,
                                 target,
                                 ssv =NULL,
                                 outlier_removal_target = TRUE,

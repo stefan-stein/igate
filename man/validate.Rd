@@ -2,26 +2,26 @@
 % Please edit documentation in R/validate.R
 \name{validate}
 \alias{validate}
-\title{Validates results after using \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
+\title{Validates results after using \code{\link{igate}} or \code{\link{categorical.igate}}.}
 \usage{
 validate(validation_df, target, causes, results_df, type = NULL)
 }
 \arguments{
 \item{validation_df}{Data frame to be used for validation. It is recommended to use
-a different data frame from the one used in \code{\link{gbpca}}/ \code{\link{categorical.gbpca}}.
+a different data frame from the one used in \code{\link{igate}}/ \code{\link{categorical.igate}}.
 The same data frame can be used if just a sanity check of the results is performed. This
 data frame must contain the \code{target} variable as well as all the causes determined
-by \code{\link{gbpca}}/ \code{\link{categorical.gbpca}}.}
+by \code{\link{igate}}/ \code{\link{categorical.igate}}.}
 
-\item{target}{Target variable that was used in \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
+\item{target}{Target variable that was used in \code{\link{igate}} or \code{\link{categorical.igate}}.}
 
-\item{causes}{Causes determined by \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.
-If you saved the results of \code{\link{gbpca}}/ \code{\link{categorical.gbpca}} in an object
+\item{causes}{Causes determined by \code{\link{igate}} or \code{\link{categorical.igate}}.
+If you saved the results of \code{\link{igate}}/ \code{\link{categorical.igate}} in an object
 \code{results}, simply use \code{results$Causes} here.}
 
-\item{results_df}{The data frame containing the results of \code{\link{gbpca}} or \code{\link{categorical.gbpca}}.}
+\item{results_df}{The data frame containing the results of \code{\link{igate}} or \code{\link{categorical.igate}}.}
 
-\item{type}{The type of gbpca that was performed: either \code{"continuous"} or \code{"categorical"}. If not provided
+\item{type}{The type of igate that was performed: either \code{"continuous"} or \code{"categorical"}. If not provided
 function will try to guess the correct type based on the type of \code{validation_df[[target]]}.}
 }
 \value{
@@ -58,7 +58,7 @@ good/ bad expected quality.
 }
 \description{
 Takes a new data frame to be used for validation and the causes and control bands
-obtained from \code{\link{gbpca}} or \code{\link{categorical.gbpca}} and returns
+obtained from \code{\link{igate}} or \code{\link{categorical.igate}} and returns
 all those observations that fall within these control bands.
 }
 \details{

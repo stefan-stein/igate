@@ -3,7 +3,7 @@
 \name{categorical.freqplot}
 \alias{categorical.freqplot}
 \title{Produces frequency plots (normed to density plots to account for
-different category sizes) for sanity check in categorical GBPCA.}
+different category sizes) for sanity check in categorical iGATE.}
 \usage{
 categorical.freqplot(df, target, ssv = NULL,
   outlier_removal_ssv = TRUE)

@@ -1,15 +1,15 @@
 
-# GBPCA for categorical variables -----------------------------------------
+# iGATE for categorical variables -----------------------------------------
 
 # Outlier removal for categorical target makes no sense
 
-#' gbpca function for categorical target variables
+#' igate function for categorical target variables
 #'
 #' This function performs an good/bad - pairwise comparison analysis on a dataset and returns those parameters found to be influential.
 #' @param df Data frame to be analysed.
 #' @param versus How many Best of the Best and Worst of the Worst do we collect? By default, we will collect 8 of each.
 #' @param target Target variable to be analysed. Must be categorical.
-#' Use \code{\link{gbpca}} for continuous \code{target}.
+#' Use \code{\link{igate}} for continuous \code{target}.
 #' @param best.cat The best category. The \code{versus} BOB will be selected randomly from this
 #' category.
 #' @param worst.cat The worst category. The \code{versus} WOW will be selected randomly from this
@@ -74,7 +74,7 @@
 #' determined. The randomness in the selection is quantified by \code{ties_best_cat,
 #' ties_worst_cat}, which gives the size of the best/ worst category respectively.
 #'
-#' @examples categorical.gbpca(mtcars, target = "cyl", best.cat = "8", worst.cat = "4")
+#' @examples categorical.igate(mtcars, target = "cyl", best.cat = "8", worst.cat = "4")
 #'
 #' @export
 #'
@@ -85,7 +85,7 @@
 #'
 
 
-categorical.gbpca <- function(df,
+categorical.igate <- function(df,
                              versus = 8,
                              target,
                              best.cat,
