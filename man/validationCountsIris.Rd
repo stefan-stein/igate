@@ -16,9 +16,7 @@ This is the output of
 
 \code{
 x <- validate(iris, target = "Sepal.Length",
-
 causes = resultsIris$Causes,
-
 results_df = resultsIris)
 }
 

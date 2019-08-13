@@ -38,7 +38,7 @@ A data frame with the following columns
 \tabular{ll}{
 \code{Causes} \tab Those ssv that have been found to be influential to the target variable.\cr
 \code{Count} \tab The value returned by the counting method. \cr
-\code{p.value} \tab The p-value of the hypothesis test performed, i.e. either of the
+\code{p.value} \tab The p-value of the hypothesis test performed, i.e. \cr either of the
 Wilcoxon rank test (in case \code{test = "w"}) or the t-test (if \code{test = "t"}).\cr
 \code{good_lower_bound} \tab The lower bound for this \code{Cause} for good quality.\cr
 \code{good_upper_bound} \tab The upper bound for this \code{Cause} for good quality.\cr

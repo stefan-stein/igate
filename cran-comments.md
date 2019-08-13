@@ -1,27 +1,24 @@
 ## Test environments
-* local OS X install, R 3.3.3
+* local OS X install, R 3.6.0
 * ubuntu 12.04 (on travis-ci), R 3.3.3
 * win-builder (devel and release)
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+There were no ERRORs or WARNINGs. 
 
 
-There was 1 NOTE
+There was 1 NOTE:
 
-* categorical.freqplot: no visible global function definition for
-  ‘aes_string’
-  
-  Trying to import aes_string from ggplot2 results in an error at build time.
-  
-* categorical.freqplot: no visible global function definition for
-  ‘geom_freqpoly’
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: ‘Stefan Stein <s.stein@warwick.ac.uk>’
+New submission
 
-  Trying to import aes_string from ggplot2 results in an error at build time.
+This is my first R package to be submitted to CRAN, hence the note.
+
+This is a new release.
 
 
-* This is a new release.
 
 ## Reverse dependencies
 
