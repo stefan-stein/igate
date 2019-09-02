@@ -6,9 +6,9 @@
 #'
 #'This function takes a data frame, a categorical target variable and a list of ssv and
 #'produces a density plot of each ssv and each category of the target variable. The output is written as
-#'.png file into the current working directory. Also, summary statistics are provided. NOTE:
-#'The files will be saved into the current working directory, so consider changing the
-#'working directory to a new empty folder before running this function.
+#'.png file into the current working directory. Also, summary statistics are provided.
+#'The files can be saved into the current working directory. Consider changing the
+#'working directory to a new empty folder before running if you want to save a copy of the plots.
 #'
 #' @param df Data frame to be analysed.
 #' @param target Categorical target varaible to be analysed.
@@ -17,6 +17,8 @@
 #' will be tested. If no list of ssv is provided, the test will be performed
 #' on all numeric variables.
 #' @param outlier_removal_ssv Logical. Should outlier removal be performed for each ssv (default: \code{TRUE})?
+#' @param savePlots Logical. If \code{FALSE} (the default) frequency plots will be output to the standard plotting
+#' device. If \code{TRUE}, frequency plots will be saved as png to the current working directory.
 #'
 #' @return The density plots of each category of \code{target} against each \code{ssv} are written as
 #' .png file into the current working directory. Also, a data frame with the following
@@ -53,7 +55,8 @@
 categorical.freqplot <- function(df,
                                  target,
                                  ssv =NULL,
-                                 outlier_removal_ssv = TRUE){
+                                 outlier_removal_ssv = TRUE,
+                                 savePlots = FALSE){
 
   if(sum(names(df) == target) != 1){
     stop(paste0(target,
@@ -113,10 +116,15 @@ categorical.freqplot <- function(df,
 
       binwidth <- (max(df_clean[,i]) - min(df_clean[,i]))/(ceiling(log2(nrow(df_clean)))+1)
 
-      ggplot(data = df_clean, mapping = aes_string(x = names(df_clean)[i], "..density.." ,color = target))+
-        geom_freqpoly(binwidth = binwidth)
+      if(savePlots){
+        ggplot(data = df_clean, mapping = aes_string(x = names(df_clean)[i], "..density.." ,color = target))+
+          geom_freqpoly(binwidth = binwidth)
 
-      ggsave(filename = paste0(str_replace_all(names(df_clean)[i], "[^[:alnum:]]", ""), "_against_", target,".png"))
+        ggsave(filename = paste0(str_replace_all(names(df_clean)[i], "[^[:alnum:]]", ""), "_against_", target,".png"))
+      }else{
+        print(ggplot(data = df_clean, mapping = aes_string(x = names(df_clean)[i], "..density.." ,color = target))+
+                geom_freqpoly(binwidth = binwidth))
+      }
 
       outlier.df[i,4] <- TRUE
     }

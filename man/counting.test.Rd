@@ -45,11 +45,3 @@ within that cluser are \code{good_band_lower_bound} and
 no such clusters form at the end of the ordered list, the control bands are
 set to -1.
 }
-\examples{
-B <- 1:8
-W <- 5:12
-counting.test(B,W)
-
-
-
-}

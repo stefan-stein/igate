@@ -6,7 +6,7 @@
 different category sizes) for sanity check in categorical iGATE.}
 \usage{
 categorical.freqplot(df, target, ssv = NULL,
-  outlier_removal_ssv = TRUE)
+  outlier_removal_ssv = TRUE, savePlots = FALSE)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}
@@ -19,6 +19,9 @@ will be tested. If no list of ssv is provided, the test will be performed
 on all numeric variables.}
 
 \item{outlier_removal_ssv}{Logical. Should outlier removal be performed for each ssv (default: \code{TRUE})?}
+
+\item{savePlots}{Logical. If \code{FALSE} (the default) frequency plots will be output to the standard plotting
+device. If \code{TRUE}, frequency plots will be saved as png to the current working directory.}
 }
 \value{
 The density plots of each category of \code{target} against each \code{ssv} are written as
@@ -37,9 +40,9 @@ produced if a ssv is constant.
 \description{
 This function takes a data frame, a categorical target variable and a list of ssv and
 produces a density plot of each ssv and each category of the target variable. The output is written as
-.png file into the current working directory. Also, summary statistics are provided. NOTE:
-The files will be saved into the current working directory, so consider changing the
-working directory to a new empty folder before running this function.
+.png file into the current working directory. Also, summary statistics are provided.
+The files can be saved into the current working directory. Consider changing the
+working directory to a new empty folder before running if you want to save a copy of the plots.
 }
 \details{
 Frequency plots for each \code{ssv} against  each category of the \code{target} are produced and

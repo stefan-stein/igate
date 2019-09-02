@@ -5,7 +5,8 @@
 \title{Produces the regression plots for sanity check in iGATE}
 \usage{
 igate.regressions(df, target, ssv = NULL,
-  outlier_removal_target = TRUE, outlier_removal_ssv = TRUE)
+  outlier_removal_target = TRUE, outlier_removal_ssv = TRUE,
+  savePlots = FALSE)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}
@@ -23,6 +24,9 @@ prior outlier removal has been performed on df, i.e. \code{df} still contains al
 the data. Otherwise calculation for outlier threshold will be falsified.}
 
 \item{outlier_removal_ssv}{Logical. Should outlier removal be performed for each ssv (default: \code{TRUE})?}
+
+\item{savePlots}{Logical. If \code{FALSE} (the default) regression plots will be output to the standard plotting
+device. If \code{TRUE}, regression plots will be saved as png to the current working directory.}
 }
 \value{
 The regression plots of \code{target} against each \code{ssv} are written as
@@ -42,7 +46,7 @@ for example, if a ssv is constant.\cr
 }
 \description{
 This function takes a data frame, a target variable and a list of ssv and
-produces a regression plot of each ssv against the target. The output is written as
+produces a regression plot of each ssv against the target. The output can written as
 .png file into the current working directory. Also, summary statistics are provided.
 }
 \details{

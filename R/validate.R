@@ -71,15 +71,15 @@ validate <- function(validation_df,
                      type = NULL){
   if(is.null(type)){
     if(is.numeric(validation_df[[target]]) && !is.factor(validation_df[[target]])){
-      print("Guessing that perfromed igate was continuous. Using type = 'continuous'.")
+      message("Guessing that perfromed igate was continuous. Using type = 'continuous'.")
       type <- "continuous"
     }
     else if(is.character(validation_df[[target]]) || is.factor(validation_df[[target]])){
-      print("Guessing that perfromed igate was categorical. Using type = 'categorical'.")
+      message("Guessing that perfromed igate was categorical. Using type = 'categorical'.")
       type <- "categorical"
     }
     else{
-      print("Sorry, was not able to guess type of igate. Please specify type as either 'continuous' or 'categorical'.")
+      message("Sorry, was not able to guess type of igate. Please specify type as either 'continuous' or 'categorical'.")
     }
   }
   # Check that type of target and specified type fit

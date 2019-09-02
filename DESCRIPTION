@@ -1,12 +1,13 @@
 Package: igate
 Type: Package
-Title: Perform Good/ Bad Pairwise Comparison Analysis and Create Standardised Reports
-Version: 0.3.0
+Title: Guided Analytics for Testing Manufacturing Parameters
+Version: 0.3.1
 Authors@R: person("Stefan", "Stein", email = "s.stein@warwick.ac.uk",
                   role = c("aut", "cre"))
-Description: An implementation of the good/ bad pairwise comparison analysis 
-    framework. Methods are available for continuous and categorical target
-    variables as well as for generating a standardized report of the conducted analysis.
+Description: An implementation of the initial guided analytics for parameter testing and
+    controlband extraction framework. Functions are available for continuous and 
+    categorical target variables as well as for generating a standardized report of the
+    conducted analysis.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

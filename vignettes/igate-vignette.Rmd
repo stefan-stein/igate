@@ -81,18 +81,18 @@ set.seed(123)
 n <- nrow(iris)*2/3
 rows <- sample(1:nrow(iris), n)
 df <- iris[rows, ]
-results <- igate(df, target = "Sepal.Length", good_end = "high")
+results <- igate(df, target = "Sepal.Length", good_end = "high", savePlots = TRUE)
 results
 ```
 
-The significant variables are shown alongside their count summary statistic from the Tukey-Duckworth Test as well as the p-value from the Wilcoxon-Rank test. Also, we see the good and bad control bands as well as several summary statistics to ascertain the randomness in the results (see documentation of `igate` for details).
+The significant variables are shown alongside their count summary statistic from the Tukey-Duckworth Test as well as the p-value from the Wilcoxon-Rank test. Also, we see the good and bad control bands as well as several summary statistics to ascertain the randomness in the results (see documentation of `igate` for details). Remember to use the option `savePlots = TRUE` if you want to save the boxplot of the target variable as a png to the current workin directory. This png will be needed for producing the final report of the analysis.
 
 Next, we perform a sanity check for the found results
 ```{r}
-igate.regressions(df, target = "Sepal.Length", ssv = results$Causes)
+igate.regressions(df, target = "Sepal.Length", ssv = results$Causes, savePlots = TRUE)
 ```
 
-A data frame is output, showing us that the regression succeeded (column `regression_plot`) for both SSV as well as displaying the respective $r^2$ value, gradient and intercept values etc. This function also saves a regression plot for each SSV against the target into the current working directory. Upon visual inspection, the expert can decide if they want to keep the SSV for further analysis or not.
+A data frame is output, showing us that the regression succeeded (column `regression_plot`) for both SSV as well as displaying the respective $r^2$ value, gradient and intercept values etc. Regression plots of each SSV against the target will be plotted. Remember to set the option `savePlots = TRUE` in the call of `igate.regressions` to save the regression plots as png files to the current working directory. These will be needed if you want to produce a report with the `report` function. Upon visual inspection, the expert can decide if they want to keep the SSV for further analysis or not.
 
 ```{r}
 validation_df <- iris[-rows,]
@@ -120,7 +120,7 @@ val[[3]]
 
 As we can see, indeed those observations with predicted good quality have higher values than those with predicted bad quality, indicating that our analysis was successful and we found the significant process parameters.
 
-Finally, we can produce a standardized report summarizing our results by running
+Finally, if we specified `savePlots = TRUE` in `igate` and `igate.regressions` and saved the corresponding plots to the current working directory, we can produce a standardized report summarizing our results by running
 
 ```{r, eval=FALSE}
 validatedObs <- val[[1]]
@@ -137,7 +137,7 @@ report(df = df,
        validation_summary = "validationSummary")
 ```
 
-This will create a html file titled "Good_Bad_Report.html" in the current working directory.
+This will create a html file titled "igate_Report.html" in the current working directory.
 
 Using igate for categorical target variables is completely analogous, simply run `categorical.igate` and `categorical.freqplot` instead of `igate` and `igate.regressions`.
 

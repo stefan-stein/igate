@@ -2,7 +2,8 @@
 
 #' igate function for continuous target variables
 #'
-#' This function performs an good/bad - pairwise comparison analysis on a dataset and returns those parameters found to be influential.
+#' This function performs an initial Guided Analysis for parameter testing and controlband extraction (iGATE)
+#' on a dataset and returns those parameters found to be influential.
 #' @param df Data frame to be analysed.
 #' @param versus How many Best of the Best and Worst of the Worst do we collect? By default, we will collect 8 of each.
 #' @param target Target varaible to be analysed. Must be continuous. Use \code{\link{categorical.igate}} for categorical target.
@@ -19,6 +20,10 @@
 #' @param outlier_removal_ssv Logical. Should outlier removal be performed for each ssv (default: \code{TRUE})?
 #' @param good_end Are low (default) or high values of target variable good? This is needed
 #' to determine the control bands.
+#' @param savePlots Logical, only relevant if \code{outlier_removal_target} is TRUE. If  \code{savePlots == FALSE}
+#' (the default) the boxplot of the target variable will be output to the standard output device for plots, usually
+#' the console. If \code{TRUE}, the boxplot will be saved to the current working directory as a png file.
+#'
 #'
 #'
 #' @return A data frame with the following columns
@@ -100,13 +105,14 @@
 
 
 igate <- function(df,
-                             versus = 8,
-                             target,
-                             test = "w",
-                             ssv = NULL,
-                             outlier_removal_target = TRUE,
-                             outlier_removal_ssv = TRUE,
-                             good_end = "low"
+                  versus = 8,
+                  target,
+                  test = "w",
+                  ssv = NULL,
+                  outlier_removal_target = TRUE,
+                  outlier_removal_ssv = TRUE,
+                  good_end = "low",
+                  savePlots = FALSE
 ){
 
 
@@ -119,23 +125,32 @@ igate <- function(df,
                ".\nGot sum(names(df) == target) = ", sum(names(df) == target),
                ", but need 1."))
   }
+  if(!(test == "w" || test == "t")){
+    stop(paste0(test,
+                " is not a valid hypothesis test. See documentation (?igate)"))
+  }
   # Remove columns with only missing values
   df <- df[,colSums(is.na(df)) < nrow(df)]
 
   # Remove outliers
   if(outlier_removal_target){
     box_stats <- boxplot.stats(df[[target]]) #we need this as extra variable tp keep track of removed records (we overwrite df)
-    png(filename = paste0("Boxplot_of_", target,".png"),
-         width = 573,
-         height = 371)
-    boxplot(df[[target]], xlab = target,
-            main = paste0("Boxplot of ", target, ", containing ", length(box_stats$out), " outliers." ) )
-    dev.off()
-    df <- df%>%dplyr::filter(df[[target]] <= box_stats$stats[5] &
-                             df[[target]] >= box_stats$stats[1])
-    print(paste0(length(box_stats$out), " outliers have been removed."))
-    print(paste0("Retaining ", length(df[[target]]), " observations."))
 
+    if(savePlots){
+      png(filename = paste0("Boxplot_of_", target,".png"),
+          width = 573,
+          height = 371)
+      boxplot(df[[target]], xlab = target,
+              main = paste0("Boxplot of ", target, ", containing ", length(box_stats$out), " outliers." ) )
+      dev.off()
+    }else{
+      boxplot(df[[target]], xlab = target,
+              main = paste0("Boxplot of ", target, ", containing ", length(box_stats$out), " outliers." ) )
+    }
+    df <- df%>%dplyr::filter(df[[target]] <= box_stats$stats[5] &
+                               df[[target]] >= box_stats$stats[1])
+    message(paste0(length(box_stats$out), " outliers have been removed."))
+    message(paste0("Retaining ", length(df[[target]]), " observations."))
   }
 
   # If no ssv are provided, we take all the numeric columns as ssv
@@ -179,8 +194,7 @@ igate <- function(df,
   # Which follow up test are we using?
   h.test <- function(x,y){
     if(test == "t"){t.test(x,y)}
-    else if(test == "w"){wilcox.test(x,y)}
-    else{print("Error: Unrecognized test")}
+    else {wilcox.test(x,y)}
   }
 
 
@@ -189,9 +203,9 @@ igate <- function(df,
 
 
   #Console output of which test we are using
-  print(paste0("Using pairwise comparison with ", versus, " BOB vs. ", versus, " WOW."))
-  print(paste0("Using counting method with ",
-               if(test == "t"){"t test"}
+  message(paste0("Using pairwise comparison with ", versus, " BOB vs. ", versus, " WOW."))
+  message(paste0("Using counting method with ",
+               if(test == "t"){"t-test"}
                else if(test == "w"){"Wilcoxon rank test"}
                else{"ERROR: unrecognized test. Please use t or w as test argument."},
                " as follow up test."))
@@ -205,7 +219,7 @@ igate <- function(df,
     na_removed[i] <- sum(is.na(BOB.WOW_i[,2]))
     BOB.WOW_i <- BOB.WOW_i[!is.na(BOB.WOW_i[,2]),]
     if(nrow(BOB.WOW_i) < 2*versus){
-      print(paste("Not enough non-missing values for", ssv[i]))
+      message(paste("Not enough non-missing values for", ssv[i]))
       next
     }
     #Outlier removal for ssv
@@ -254,7 +268,7 @@ igate <- function(df,
     }else if(good_end == "high"){
       BOB_i <- upper_end
       WOW_i <- lower_end
-    }else{print("Ordering for target variable not correctly specified.")}
+    }else{message("Ordering for target variable not correctly specified.")}
 
 
     # Testing
@@ -268,7 +282,7 @@ igate <- function(df,
     #follow up test if count is larger than 6
     if(test_results[i] >= 6){
       tryCatch(p_values[i] <- h.test(BOB_i[,2], WOW_i[,2])$p.value,
-               error = function(e) {print(paste("Skip constant column", names(BOB.WOW_i)[2]));
+               error = function(e) {message(paste("Skip constant column", names(BOB.WOW_i)[2]));
                p_values[i] <-  -2})
     }
     }

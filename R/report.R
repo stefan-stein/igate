@@ -1,7 +1,7 @@
 #' Generates report about a conducted igate.
 #'
 #' Takes results from a previous igate and automatically generates a html report
-#' for it.
+#' for it. Be aware that running this function will create an html document in your current working directory.
 #'
 #' @param df The data frame that was analysed with \code{\link{igate}} or \code{\link{categorical.igate}}.
 #' @param versus What value of \code{versus} was used?
@@ -22,14 +22,21 @@
 #' @param validation_counts R object containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.
 #' @param validation_summary R object containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.
 #'
+#' @return An html file named "iGATE_Report.html" will be output to the current working directory, containing details
+#' about the conducted analysis. This includes a list of the analysed SSV, as well as tables with the results from
+#' \code{\link{igate}}/ \code{\link{categorical.igate}} and plots from \code{\link{igate.regressions}}/
+#' \code{\link{categorical.freqplot}}.
+#'
 #' @examples
+#'
+#' \donttest{
 #' ## For continuous target
 #' ## If you want to create a new igate from scratch, this is the last step
 #' ## and relies on executing the other functions in this package first.
 #' ## Run igate
-#' results <- igate(iris, target = "Sepal.Length")
+#' results <- igate(iris, target = "Sepal.Length", savePlots = TRUE)
 #' ## Produce regression plots
-#' igate.regressions(iris, target = "Sepal.Length")
+#' igate.regressions(iris, target = "Sepal.Length", savePlots = TRUE)
 #' ## Validate findings and store results
 #' x <- validate(iris, target = "Sepal.Length", causes = results$Causes, results_df = results)
 #' ## Split above results
@@ -40,7 +47,7 @@
 #' report(df = iris, target = "Sepal.Length", type = "continuous", good_outcome = "low",
 #' results_path = "results", validation = TRUE, validation_path = "validatedObs",
 #' validation_counts = "validationCounts", validation_summary = "validationSummary")
-#'
+#' }
 #'
 #' @export
 

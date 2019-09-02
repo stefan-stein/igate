@@ -49,7 +49,8 @@ Wilcoxon rank test (in case \code{test = "w"}) or the t-test (if \code{test = "t
 }
 }
 \description{
-This function performs an good/bad - pairwise comparison analysis on a dataset and returns those parameters found to be influential.
+This function performs an initial Guided Analysis for parameter testing and controlband extraction (iGATE) for
+a categorical target variable on a dataset and returns those parameters found to be influential.
 }
 \details{
 We collect the Best of the Best and the Worst of the Worst

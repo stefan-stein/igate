@@ -33,7 +33,8 @@ on all numeric variables.}
 
 \item{outlier_removal_ssv}{Logical. Should outlier removal be performed for each \code{ssv} (default: \code{TRUE})?}
 
-\item{iterations}{Integer. How often should categorical.igate be performed?}
+\item{iterations}{Integer. How often should categorical.igate be performed? A message about how many iterations
+have been perfermed so far will be printed to the console every \code{0.1*iterations} iterations.}
 
 \item{threshold}{Between 0 and 1. Only parameters that are selected at least \code{floor(iterations*threshold)}
 times are returned.}
@@ -53,8 +54,9 @@ Wilcoxon rank test (in case \code{test = "w"}) or the t-test (if \code{test = "t
 }
 }
 \description{
-This function performs a robust good/bad - pairwise comparison analysis for a categorical target variable
-by repeatedly running \code{categorical.igate} and only returning those parameters that are selected more often than a
+This function performs a robust an initial Guided Analysis for parameter testing and
+controlband extraction (iGATE) for a categorical target variable by repeatedly running
+\code{\link{categorical.igate}} and only returning those parameters that are selected more often than a
 certain threshold.
 }
 \details{

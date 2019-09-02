@@ -3,7 +3,7 @@
 #'Produces the regression plots for sanity check in iGATE
 #'
 #'This function takes a data frame, a target variable and a list of ssv and
-#'produces a regression plot of each ssv against the target. The output is written as
+#'produces a regression plot of each ssv against the target. The output can written as
 #'.png file into the current working directory. Also, summary statistics are provided.
 #'
 #' @param df Data frame to be analysed.
@@ -17,6 +17,8 @@
 #' prior outlier removal has been performed on df, i.e. \code{df} still contains all
 #' the data. Otherwise calculation for outlier threshold will be falsified.
 #' @param outlier_removal_ssv Logical. Should outlier removal be performed for each ssv (default: \code{TRUE})?
+#' @param savePlots Logical. If \code{FALSE} (the default) regression plots will be output to the standard plotting
+#' device. If \code{TRUE}, regression plots will be saved as png to the current working directory.
 #'
 #' @return The regression plots of \code{target} against each \code{ssv} are written as
 #' .png file into the current working directory. Also, a data frame with the following
@@ -48,10 +50,11 @@
 
 
 igate.regressions <- function(df,
-                                target,
-                                ssv =NULL,
-                                outlier_removal_target = TRUE,
-                                outlier_removal_ssv = TRUE){
+                              target,
+                              ssv =NULL,
+                              outlier_removal_target = TRUE,
+                              outlier_removal_ssv = TRUE,
+                              savePlots = FALSE){
 
   if(sum(names(df) == target) != 1){
     stop(paste0(target,
@@ -64,8 +67,8 @@ igate.regressions <- function(df,
   if(outlier_removal_target){
     box_stats <- boxplot.stats(df[[target]]) #we need this as extra variable tp keep track of removed records (we overwrite df)
     df <- df%>%filter(df[[target]] <= box_stats$stats[5])
-    print(paste0(length(box_stats$out), " outliers have been removed."))
-    print(paste0("Retaining ", length(df[[target]]), " observations."))
+    message(paste0(length(box_stats$out), " outliers have been removed."))
+    message(paste0("Retaining ", length(df[[target]]), " observations."))
   }
 
 
@@ -112,18 +115,35 @@ igate.regressions <- function(df,
       outlier.df[i,4] <- FALSE
     }else{
       fit <- lm(df_clean[[target]]~unlist(df_clean[,i]))
-      png(filename = paste0(str_replace_all(names(df_clean)[i], "[^[:alnum:]]", ""), "_against_", target,".png"),
-         width = 573,
-         height = 371)
-      plot(unlist(df_clean[,i]),df_clean[[target]],
-           main = paste0("Linear regression plot of\n ", names(df_clean)[i], " against ", target,
-                         ", r^2 = ", round(summary(fit)$r.squared, 3)),
-           sub = paste0("Formula: ", target, " = ",
-                        round(fit$coefficients[2], 3), "*", names(df_clean)[i], " + ", round(fit$coefficients[1],3)),
-           xlab = names(df_clean)[i],
-           ylab = target)
-      abline(fit)
-      dev.off()
+
+      if(savePlots){
+
+        png(filename = paste0(str_replace_all(names(df_clean)[i], "[^[:alnum:]]", ""), "_against_", target,".png"),
+            width = 573,
+            height = 371)
+        plot(unlist(df_clean[,i]),df_clean[[target]],
+             main = paste0("Linear regression plot of\n ", names(df_clean)[i], " against ", target,
+                           ", r^2 = ", round(summary(fit)$r.squared, 3)),
+             sub = paste0("Formula: ", target, " = ",
+                          round(fit$coefficients[2], 3), "*", names(df_clean)[i], " + ", round(fit$coefficients[1],3)),
+             xlab = names(df_clean)[i],
+             ylab = target)
+        abline(fit)
+        dev.off()
+
+      }else{
+
+        plot(unlist(df_clean[,i]),df_clean[[target]],
+             main = paste0("Linear regression plot of\n ", names(df_clean)[i], " against ", target,
+                           ", r^2 = ", round(summary(fit)$r.squared, 3)),
+             sub = paste0("Formula: ", target, " = ",
+                          round(fit$coefficients[2], 3), "*", names(df_clean)[i], " + ", round(fit$coefficients[1],3)),
+             xlab = names(df_clean)[i],
+             ylab = target)
+        abline(fit)
+
+      }
+
       outlier.df[i,4] <- TRUE
       outlier.df[i,5] <- summary(fit)$r.squared
       outlier.df[i,6] <- fit$coefficients[2]

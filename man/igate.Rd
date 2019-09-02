@@ -6,7 +6,7 @@
 \usage{
 igate(df, versus = 8, target, test = "w", ssv = NULL,
   outlier_removal_target = TRUE, outlier_removal_ssv = TRUE,
-  good_end = "low")
+  good_end = "low", savePlots = FALSE)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}
@@ -32,13 +32,17 @@ the data. Otherwise calculation for outlier threshold will be falsified.}
 
 \item{good_end}{Are low (default) or high values of target variable good? This is needed
 to determine the control bands.}
+
+\item{savePlots}{Logical, only relevant if \code{outlier_removal_target} is TRUE. If  \code{savePlots == FALSE}
+(the default) the boxplot of the target variable will be output to the standard output device for plots, usually
+the console. If \code{TRUE}, the boxplot will be saved to the current working directory as a png file.}
 }
 \value{
 A data frame with the following columns
 \tabular{ll}{
 \code{Causes} \tab Those ssv that have been found to be influential to the target variable.\cr
 \code{Count} \tab The value returned by the counting method. \cr
-\code{p.value} \tab The p-value of the hypothesis test performed, i.e. \cr either of the
+\code{p.value} \tab The p-value of the hypothesis test performed, i.e. either of the
 Wilcoxon rank test (in case \code{test = "w"}) or the t-test (if \code{test = "t"}).\cr
 \code{good_lower_bound} \tab The lower bound for this \code{Cause} for good quality.\cr
 \code{good_upper_bound} \tab The upper bound for this \code{Cause} for good quality.\cr
@@ -55,7 +59,8 @@ Wilcoxon rank test (in case \code{test = "w"}) or the t-test (if \code{test = "t
 }
 }
 \description{
-This function performs an good/bad - pairwise comparison analysis on a dataset and returns those parameters found to be influential.
+This function performs an initial Guided Analysis for parameter testing and controlband extraction (iGATE)
+on a dataset and returns those parameters found to be influential.
 }
 \details{
 We collect the Best of the Best and the Worst of the Worst

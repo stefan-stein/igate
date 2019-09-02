@@ -1,7 +1,6 @@
 ## Test environments
 * local OS X install, R 3.6.0
-* ubuntu 12.04 (on travis-ci), R 3.3.3
-* win-builder (devel and release)
+* local Windows 7 install R 3.6.0
 
 ## R CMD check results
 
@@ -16,19 +15,24 @@ New submission
 
 This is my first R package to be submitted to CRAN, hence the note.
 
-This is a new release.
-
-
-
 ## Reverse dependencies
 
 This is a new release, so there are no reverse dependencies.
 
----
+## Resubmission
 
-* I have run R CMD check on the NUMBER downstream dependencies.
-  (Summary at ...). 
-  
-* FAILURE SUMMARY
+This is a resubmission. In this version I addressed the issues raised by 
+Martina Schmirl in the name of the CRAN team in her email from the 01.09.2019:
 
-* All revdep maintainers were notified of the release on RELEASE DATE.
+* Changed and shortend the title as requested; changed description as requested
+* Added \value field for the report function
+* Changed \dontrun to \donttest in the examples section of the report function
+* Information is now written to the console via the message() function rather than print(). This affects functions
+  - categorical.igate
+  - igate
+  - igate.regressions
+  - robust.categorical.igate
+
+
+
+

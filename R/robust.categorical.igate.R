@@ -4,8 +4,9 @@
 
 #' Robust igate for categorical target variables
 #'
-#' This function performs a robust good/bad - pairwise comparison analysis for a categorical target variable
-#' by repeatedly running \code{categorical.igate} and only returning those parameters that are selected more often than a
+#' This function performs a robust an initial Guided Analysis for parameter testing and
+#' controlband extraction (iGATE) for a categorical target variable by repeatedly running
+#' \code{\link{categorical.igate}} and only returning those parameters that are selected more often than a
 #' certain threshold.
 #'
 #' @param df Data frame to be analysed.
@@ -24,7 +25,8 @@
 #' will be tested. If no list of \code{ssv} is provided, the test will be performed
 #' on all numeric variables.
 #' @param outlier_removal_ssv Logical. Should outlier removal be performed for each \code{ssv} (default: \code{TRUE})?
-#' @param iterations Integer. How often should categorical.igate be performed?
+#' @param iterations Integer. How often should categorical.igate be performed? A message about how many iterations
+#' have been perfermed so far will be printed to the console every \code{0.1*iterations} iterations.
 #' @param threshold Between 0 and 1. Only parameters that are selected at least \code{floor(iterations*threshold)}
 #' times are returned.
 #'
@@ -101,6 +103,10 @@ robust.categorical.igate <- function(df,
                 ".\nGot sum(names(df) == target) = ", sum(names(df) == target),
                 ", but need 1."))
   }
+  if(!(test == "w" || test == "t")){
+    stop(paste0(test,
+                " is not a valid hypothesis test. See documentation (?robust.categorical.igate)"))
+  }
 
   # These two lines are only here to appease R CMD check
   Causes <- Frequency <- Count <- p.values <- median_count <- NULL
@@ -108,12 +114,12 @@ robust.categorical.igate <- function(df,
 
   results <- data_frame()
   for (i in 1:iterations) {
-    if(i %% floor(0.1*iterations) == 0){print(paste0("Iteration ", i))}
+    if(i %% floor(0.1*iterations) == 0){message(paste0("Iteration ", i))}
     # To suppress console output by categorical.igate
-    dummy <- capture.output(res <- categorical.igate(df, versus, target, best.cat, worst.cat, test, ssv, outlier_removal_ssv))
+    suppressMessages(res <- categorical.igate(df, versus, target, best.cat, worst.cat, test, ssv, outlier_removal_ssv))
 
     results <- rbind(results, res)
-    rm(dummy, res)
+    rm(res)
   }
   y <- results%>%
     group_by(Causes)%>%

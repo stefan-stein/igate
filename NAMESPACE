@@ -2,7 +2,6 @@
 
 export(categorical.freqplot)
 export(categorical.igate)
-export(counting.test)
 export(igate)
 export(igate.regressions)
 export(report)
