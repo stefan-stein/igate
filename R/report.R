@@ -21,6 +21,11 @@
 #' @param validation_path R object containing the validated observations, i.e. first data frame returned by \code{\link{validate}}.
 #' @param validation_counts R object containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.
 #' @param validation_summary R object containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.
+#' @param image_directory Directory which contains the plots from \code{igate}, \code{igate.regressions} etc.
+#' @param output_name Desired name of the output file. File extension .html will be added automatically if not supplied.
+#' If \code{NULL} will be *iGATE_Report.html*.
+#' @param output_directory Directory into which the report should be saved. To save to the current working directory,
+#' use \code{output_directory = getwd()}.
 #'
 #' @return An html file named "iGATE_Report.html" will be output to the current working directory, containing details
 #' about the conducted analysis. This includes a list of the analysed SSV, as well as tables with the results from
@@ -29,7 +34,7 @@
 #'
 #' @examples
 #'
-#' \donttest{
+#' \dontrun{
 #' ## For continuous target
 #' ## If you want to create a new igate from scratch, this is the last step
 #' ## and relies on executing the other functions in this package first.
@@ -46,7 +51,8 @@
 #' ## Create report
 #' report(df = iris, target = "Sepal.Length", type = "continuous", good_outcome = "low",
 #' results_path = "results", validation = TRUE, validation_path = "validatedObs",
-#' validation_counts = "validationCounts", validation_summary = "validationSummary")
+#' validation_counts = "validationCounts", validation_summary = "validationSummary", output_name = "testing_igate",
+#' output_directory = tempdir())
 #' }
 #'
 #' @export
@@ -55,18 +61,33 @@
 
 report <- function(df,
                    versus = 8,
-                   target = "Sepal.Length",
+                   target,
                    type = "continuous",
                    test = "w",
                    ssv = NULL,
                    outlier_removal_target = TRUE,
                    outlier_removal_ssv = TRUE,
                    good_outcome = "low",
-                   results_path = "resultsIris",
+                   results_path,
                    validation = FALSE,
-                   validation_path = "validatedObsIris",
-                   validation_counts = "validationCountsIris",
-                   validation_summary = "validationSummaryIris"){
+                   validation_path = NULL,
+                   validation_counts = NULL,
+                   validation_summary = NULL,
+                   image_directory = tempdir(),
+                   output_name = NULL,
+                   output_directory){
+
+  if(missing(output_directory)){
+    stop("Please specify output directory.")
+  }
+  if(!validation && (!is.null(validation_path) || !is.null(validation_counts) || !is.null(validation_summary))){
+    stop("You used validation = FALSE, but provided at least one of validation_path, validation_counts or validation_summary.
+         Please provide all three of them and use validation = TRUE.")
+  }
+  if(validation && (is.null(validation_path) || is.null(validation_counts) || is.null(validation_summary))){
+    stop("You used validation = TRUE, but did not provide all of validation_path, validation_counts and validation_summary.")
+  }
+
   # If no ssv are provided, all the numeric columns have been used as ssv
   if(is.null(ssv)){
     nums <- sapply(df, is.numeric)
@@ -76,33 +97,33 @@ report <- function(df,
     ssv <- names(df_num)
     # This only works for continuous target. For categorical target would give empty vector.
     if(type=="continuous"){
-      ssv <- ssv[-which( ssv == target)]
+      ssv <- ssv[-which(ssv == target)]
     }
   }
   if(type == "categorical"){outlier_removal_target <- FALSE}
 
   path_to_markdown <- system.file("rmd", "iGATE_Report.Rmd", package = "igate")
-  image_directory <- getwd()
-  print(image_directory)
+
   rmarkdown::render(path_to_markdown,
-                    output_dir = getwd(),
                     params = list(
-    df_name = deparse(substitute(df)),
-    versus = versus,
-    target = target,
-    type = type,
-    test = test,
-    ssv = ssv,
-    outlier_removal_target = outlier_removal_target,
-    outlier_removal_ssv = outlier_removal_ssv,
-    good_outcome = good_outcome,
-    results_path = results_path,
-    validation = validation,
-    validation_path = validation_path,
-    validation_counts = validation_counts,
-    validation_summary = validation_summary,
-    image_directory = image_directory
-  ))
+                      df_name = deparse(substitute(df)),
+                      versus = versus,
+                      target = target,
+                      type = type,
+                      test = test,
+                      ssv = ssv,
+                      outlier_removal_target = outlier_removal_target,
+                      outlier_removal_ssv = outlier_removal_ssv,
+                      good_outcome = good_outcome,
+                      results_path = results_path,
+                      validation = validation,
+                      validation_path = validation_path,
+                      validation_counts = validation_counts,
+                      validation_summary = validation_summary,
+                      image_directory = image_directory
+                    ),
+                    output_file = output_name,
+                    output_dir = output_directory)
 
 }
 

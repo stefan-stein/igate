@@ -75,7 +75,10 @@
 #' determined. The randomness in the selection is quantified by \code{ties_best_cat,
 #' ties_worst_cat}, which gives the size of the best/ worst category respectively.
 #'
-#' @examples categorical.igate(mtcars, target = "cyl", best.cat = "8", worst.cat = "4")
+#' @examples
+#' df <- mtcars
+#' df$cyl <- as.factor(df$cyl)
+#' categorical.igate(df, target = "cyl", best.cat = "8", worst.cat = "4")
 #'
 #' @export
 #'

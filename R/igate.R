@@ -22,8 +22,10 @@
 #' to determine the control bands.
 #' @param savePlots Logical, only relevant if \code{outlier_removal_target} is TRUE. If  \code{savePlots == FALSE}
 #' (the default) the boxplot of the target variable will be output to the standard output device for plots, usually
-#' the console. If \code{TRUE}, the boxplot will be saved to the current working directory as a png file.
-#'
+#' the console. If \code{TRUE}, the boxplot will additionally be saved to \code{image_directory} as a png file.
+#' @param image_directory Directory to which plots should be saved. This is only used if \code{savePlots = TRUE} and
+#' defaults to the temporary directory of the current R session, i.e. \code{tempdir()}. To save plots to the current
+#' working directory set \code{savePlots = TRUE} and \code{image_directory = getwd()}.
 #'
 #'
 #' @return A data frame with the following columns
@@ -97,7 +99,7 @@
 #' @export
 #'
 #' @importFrom dplyr select filter contains arrange desc min_rank %>%
-#' @importFrom grDevices boxplot.stats dev.off png
+#' @importFrom grDevices boxplot.stats dev.print
 #' @importFrom graphics abline boxplot plot
 #' @importFrom stats lm p.adjust t.test var wilcox.test
 #'
@@ -112,7 +114,8 @@ igate <- function(df,
                   outlier_removal_target = TRUE,
                   outlier_removal_ssv = TRUE,
                   good_end = "low",
-                  savePlots = FALSE
+                  savePlots = FALSE,
+                  image_directory = tempdir()
 ){
 
 
@@ -129,6 +132,10 @@ igate <- function(df,
     stop(paste0(test,
                 " is not a valid hypothesis test. See documentation (?igate)"))
   }
+  if((image_directory != tempdir()) && !savePlots){
+    stop(paste0("You specified a directory to save the images in (",
+               image_directory, ") but used savePlots = ", savePlots, ". If you want to save the images, please use savePlots = TRUE."))
+  }
   # Remove columns with only missing values
   df <- df[,colSums(is.na(df)) < nrow(df)]
 
@@ -137,12 +144,9 @@ igate <- function(df,
     box_stats <- boxplot.stats(df[[target]]) #we need this as extra variable tp keep track of removed records (we overwrite df)
 
     if(savePlots){
-      png(filename = paste0("Boxplot_of_", target,".png"),
-          width = 573,
-          height = 371)
       boxplot(df[[target]], xlab = target,
               main = paste0("Boxplot of ", target, ", containing ", length(box_stats$out), " outliers." ) )
-      dev.off()
+      dev.print(png, file = paste0(image_directory, "/Boxplot_of_", target, ".png"), width = 573, height = 371)
     }else{
       boxplot(df[[target]], xlab = target,
               main = paste0("Boxplot of ", target, ", containing ", length(box_stats$out), " outliers." ) )

@@ -18,7 +18,10 @@
 #' on all numeric variables.
 #' @param outlier_removal_ssv Logical. Should outlier removal be performed for each ssv (default: \code{TRUE})?
 #' @param savePlots Logical. If \code{FALSE} (the default) frequency plots will be output to the standard plotting
-#' device. If \code{TRUE}, frequency plots will be saved as png to the current working directory.
+#' device. If \code{TRUE}, frequency plots will be saved to \code{image_directory} as png files.
+#' @param image_directory Directory to which plots should be saved. This is only used if \code{savePlots = TRUE} and
+#' defaults to the temporary directory of the current R session, i.e. \code{tempdir()}. To save plots to the current
+#' working directory set \code{savePlots = TRUE} and \code{image_directory = getwd()}.
 #'
 #' @return The density plots of each category of \code{target} against each \code{ssv} are written as
 #' .png file into the current working directory. Also, a data frame with the following
@@ -56,7 +59,8 @@ categorical.freqplot <- function(df,
                                  target,
                                  ssv =NULL,
                                  outlier_removal_ssv = TRUE,
-                                 savePlots = FALSE){
+                                 savePlots = FALSE,
+                                 image_directory = tempdir()){
 
   if(sum(names(df) == target) != 1){
     stop(paste0(target,
@@ -65,6 +69,12 @@ categorical.freqplot <- function(df,
                 ".\nGot sum(names(df) == target) = ", sum(names(df) == target),
                 ", but need 1."))
   }
+  if((image_directory != tempdir()) && !savePlots){
+    stop(paste0("You specified a directory to save the images in (",
+                image_directory, ") but used savePlots = ", savePlots, ". If you want to save the images, please use savePlots = TRUE."))
+  }
+
+
   # If numeric, convert it first!
   if(is.numeric(df[[target]])){
     df[[target]] <- as.character(df[[target]])
@@ -117,10 +127,12 @@ categorical.freqplot <- function(df,
       binwidth <- (max(df_clean[,i]) - min(df_clean[,i]))/(ceiling(log2(nrow(df_clean)))+1)
 
       if(savePlots){
-        ggplot(data = df_clean, mapping = aes_string(x = names(df_clean)[i], "..density.." ,color = target))+
-          geom_freqpoly(binwidth = binwidth)
+        print(ggplot(data = df_clean, mapping = aes_string(x = names(df_clean)[i], "..density.." ,color = target))+
+          geom_freqpoly(binwidth = binwidth))
 
-        ggsave(filename = paste0(str_replace_all(names(df_clean)[i], "[^[:alnum:]]", ""), "_against_", target,".png"))
+        ggsave(filename = paste0(str_replace_all(names(df_clean)[i], "[^[:alnum:]]", ""),
+                                 "_against_", target,".png"),
+               path = image_directory)
       }else{
         print(ggplot(data = df_clean, mapping = aes_string(x = names(df_clean)[i], "..density.." ,color = target))+
                 geom_freqpoly(binwidth = binwidth))

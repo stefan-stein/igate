@@ -6,7 +6,7 @@
 \usage{
 igate(df, versus = 8, target, test = "w", ssv = NULL,
   outlier_removal_target = TRUE, outlier_removal_ssv = TRUE,
-  good_end = "low", savePlots = FALSE)
+  good_end = "low", savePlots = FALSE, image_directory = tempdir())
 }
 \arguments{
 \item{df}{Data frame to be analysed.}
@@ -35,7 +35,11 @@ to determine the control bands.}
 
 \item{savePlots}{Logical, only relevant if \code{outlier_removal_target} is TRUE. If  \code{savePlots == FALSE}
 (the default) the boxplot of the target variable will be output to the standard output device for plots, usually
-the console. If \code{TRUE}, the boxplot will be saved to the current working directory as a png file.}
+the console. If \code{TRUE}, the boxplot will additionally be saved to \code{image_directory} as a png file.}
+
+\item{image_directory}{Directory to which plots should be saved. This is only used if \code{savePlots = TRUE} and
+defaults to the temporary directory of the current R session, i.e. \code{tempdir()}. To save plots to the current
+working directory set \code{savePlots = TRUE} and \code{image_directory = getwd()}.}
 }
 \value{
 A data frame with the following columns

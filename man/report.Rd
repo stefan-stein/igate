@@ -4,13 +4,12 @@
 \alias{report}
 \title{Generates report about a conducted igate.}
 \usage{
-report(df, versus = 8, target = "Sepal.Length", type = "continuous",
-  test = "w", ssv = NULL, outlier_removal_target = TRUE,
-  outlier_removal_ssv = TRUE, good_outcome = "low",
-  results_path = "resultsIris", validation = FALSE,
-  validation_path = "validatedObsIris",
-  validation_counts = "validationCountsIris",
-  validation_summary = "validationSummaryIris")
+report(df, versus = 8, target, type = "continuous", test = "w",
+  ssv = NULL, outlier_removal_target = TRUE,
+  outlier_removal_ssv = TRUE, good_outcome = "low", results_path,
+  validation = FALSE, validation_path = NULL,
+  validation_counts = NULL, validation_summary = NULL,
+  image_directory = tempdir(), output_name = NULL, output_directory)
 }
 \arguments{
 \item{df}{The data frame that was analysed with \code{\link{igate}} or \code{\link{categorical.igate}}.}
@@ -44,6 +43,14 @@ case of a categorical \code{target} the name of the best category as a string.}
 \item{validation_counts}{R object containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.}
 
 \item{validation_summary}{R object containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.}
+
+\item{image_directory}{Directory which contains the plots from \code{igate}, \code{igate.regressions} etc.}
+
+\item{output_name}{Desired name of the output file. File extension .html will be added automatically if not supplied.
+If \code{NULL} will be *iGATE_Report.html*.}
+
+\item{output_directory}{Directory into which the report should be saved. To save to the current working directory,
+use \code{output_directory = getwd()}.}
 }
 \value{
 An html file named "iGATE_Report.html" will be output to the current working directory, containing details
@@ -57,7 +64,7 @@ for it. Be aware that running this function will create an html document in your
 }
 \examples{
 
-\donttest{
+\dontrun{
 ## For continuous target
 ## If you want to create a new igate from scratch, this is the last step
 ## and relies on executing the other functions in this package first.
@@ -74,7 +81,8 @@ validationSummary <- x[[3]]
 ## Create report
 report(df = iris, target = "Sepal.Length", type = "continuous", good_outcome = "low",
 results_path = "results", validation = TRUE, validation_path = "validatedObs",
-validation_counts = "validationCounts", validation_summary = "validationSummary")
+validation_counts = "validationCounts", validation_summary = "validationSummary", output_name = "testing_igate",
+output_directory = tempdir())
 }
 
 }

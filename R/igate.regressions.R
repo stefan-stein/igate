@@ -18,7 +18,10 @@
 #' the data. Otherwise calculation for outlier threshold will be falsified.
 #' @param outlier_removal_ssv Logical. Should outlier removal be performed for each ssv (default: \code{TRUE})?
 #' @param savePlots Logical. If \code{FALSE} (the default) regression plots will be output to the standard plotting
-#' device. If \code{TRUE}, regression plots will be saved as png to the current working directory.
+#' device. If \code{TRUE}, regression plots will additionally be saved to \code{image_directory} as png files.
+#' @param image_directory Directory to which plots should be saved. This is only used if \code{savePlots = TRUE} and
+#' defaults to the temporary directory of the current R session, i.e. \code{tempdir()}. To save plots to the current
+#' working directory set \code{savePlots = TRUE} and \code{image_directory = getwd()}.
 #'
 #' @return The regression plots of \code{target} against each \code{ssv} are written as
 #' .png file into the current working directory. Also, a data frame with the following
@@ -54,7 +57,8 @@ igate.regressions <- function(df,
                               ssv =NULL,
                               outlier_removal_target = TRUE,
                               outlier_removal_ssv = TRUE,
-                              savePlots = FALSE){
+                              savePlots = FALSE,
+                              image_directory = tempdir()){
 
   if(sum(names(df) == target) != 1){
     stop(paste0(target,
@@ -62,6 +66,10 @@ igate.regressions <- function(df,
                 deparse(substitute(df)),
                 ".\nGot sum(names(df) == target) = ", sum(names(df) == target),
                 ", but need 1."))
+  }
+  if((image_directory != tempdir()) && !savePlots){
+    stop(paste0("You specified a directory to save the images in (",
+                image_directory, ") but used savePlots = ", savePlots, ". If you want to save the images, please use savePlots = TRUE."))
   }
   # Remove outliers
   if(outlier_removal_target){
@@ -118,9 +126,7 @@ igate.regressions <- function(df,
 
       if(savePlots){
 
-        png(filename = paste0(str_replace_all(names(df_clean)[i], "[^[:alnum:]]", ""), "_against_", target,".png"),
-            width = 573,
-            height = 371)
+
         plot(unlist(df_clean[,i]),df_clean[[target]],
              main = paste0("Linear regression plot of\n ", names(df_clean)[i], " against ", target,
                            ", r^2 = ", round(summary(fit)$r.squared, 3)),
@@ -129,7 +135,10 @@ igate.regressions <- function(df,
              xlab = names(df_clean)[i],
              ylab = target)
         abline(fit)
-        dev.off()
+        dev.print(png, file = paste0(image_directory, "/",
+                                     str_replace_all(names(df_clean)[i], "[^[:alnum:]]", ""),
+                                     "_against_", target,".png"),
+                  width = 573, height = 371)
 
       }else{
 

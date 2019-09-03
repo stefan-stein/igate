@@ -6,7 +6,7 @@
 \usage{
 igate.regressions(df, target, ssv = NULL,
   outlier_removal_target = TRUE, outlier_removal_ssv = TRUE,
-  savePlots = FALSE)
+  savePlots = FALSE, image_directory = tempdir())
 }
 \arguments{
 \item{df}{Data frame to be analysed.}
@@ -26,7 +26,11 @@ the data. Otherwise calculation for outlier threshold will be falsified.}
 \item{outlier_removal_ssv}{Logical. Should outlier removal be performed for each ssv (default: \code{TRUE})?}
 
 \item{savePlots}{Logical. If \code{FALSE} (the default) regression plots will be output to the standard plotting
-device. If \code{TRUE}, regression plots will be saved as png to the current working directory.}
+device. If \code{TRUE}, regression plots will additionally be saved to \code{image_directory} as png files.}
+
+\item{image_directory}{Directory to which plots should be saved. This is only used if \code{savePlots = TRUE} and
+defaults to the temporary directory of the current R session, i.e. \code{tempdir()}. To save plots to the current
+working directory set \code{savePlots = TRUE} and \code{image_directory = getwd()}.}
 }
 \value{
 The regression plots of \code{target} against each \code{ssv} are written as

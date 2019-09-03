@@ -58,8 +58,6 @@ validation_summary <- get(params$validation_summary)
 Using the `r params$df_name` data set, we conducted a `r params$versus` good versus `r params$versus` bad `r params$type` pairwise comparison analysis on `r Sys.Date()`. The target variable was the `r params$type` `r params$target`. The goal of the analysis was to find process parameters in the `r params$df_name` data set that significantly influence the values of `r params$target`.
 For `r params$target`, *`r params$good_outcome`* values correspond to good values. A list of all the parameters that were analysed can be found in the [Suspected Sources of Variation] section.
 
-The results and images are stored in `r params$image_directory`.
-
 ## Analysis
 
 Outlier removal for the target variable was `r if(params$outlier_removal_target){"conducted, giving the following results"}else{"not conducted"}`. `r if(params$type == "categorical"){"Outlier removal for the target only makes sense if the target is continuous."}`
