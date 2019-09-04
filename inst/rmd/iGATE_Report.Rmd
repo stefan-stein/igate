@@ -204,11 +204,7 @@ for (i in 1:length_causes) {
 ```{r}
 if(params$validation){
 validation <- validation[order(validation$expected_quality),]
-# number_bads <- validation%>%
-#   filter(quality == "bad")%>%
-#   nrow()
-# print(number_bads)
-# validation_length <- nrow(validation)
+
 kable(validation,
       row.names = FALSE,
       caption = 'The records of the validation data set that fall into all the good control bands resp. bad control bands.',

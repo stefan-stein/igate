@@ -34,7 +34,7 @@
 #'
 #' @examples
 #'
-#' \dontrun{
+#'\dontrun{
 #' ## For continuous target
 #' ## If you want to create a new igate from scratch, this is the last step
 #' ## and relies on executing the other functions in this package first.
@@ -49,11 +49,13 @@
 #' validationCounts <- x[[2]]
 #' validationSummary <- x[[3]]
 #' ## Create report
+#' # Change this to desired output directory
+#' output_dir <- "YOUR_DIRECTORY"
 #' report(df = iris, target = "Sepal.Length", type = "continuous", good_outcome = "low",
 #' results_path = "results", validation = TRUE, validation_path = "validatedObs",
-#' validation_counts = "validationCounts", validation_summary = "validationSummary", output_name = "testing_igate",
-#' output_directory = tempdir())
-#' }
+#' validation_counts = "validationCounts", validation_summary = "validationSummary",
+#' output_name = "testing_igate", output_directory = output_dir)
+#'}
 #'
 #' @export
 
