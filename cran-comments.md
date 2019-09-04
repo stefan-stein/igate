@@ -25,11 +25,11 @@ This is a resubmission. In this version I addressed the issues raised by
 Martina Schmirl in the name of the CRAN team in her email from the 01.09.2019. Thank you for your feedback.
 The changes are as follows:
 
-* Changed and shortend the title as requested; changed description as requested.
+* Changed and shortened the title as requested; changed description as requested.
 * Added \\value field for the report function.
 * Information is now written to the console via the `message()` function rather than `print()` or `cat()`.
 * I no longer change the user's settings.
-* An issue about writing to the user's filespace was raised. I solved that issue as follows:
+* An issue about writing to the user's file space was raised. I solved that issue as follows:
     - The functions `igate`, `igate.regressions` and `categorical.freqplot` by default only
     plot graphs without saving them to the file space. Only if the user uses the option `savePlots = TRUE`
     (default is `FALSE`),
