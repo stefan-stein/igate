@@ -6,8 +6,10 @@ Authors@R: person("Stefan", "Stein", email = "s.stein@warwick.ac.uk",
                   role = c("aut", "cre"))
 Description: An implementation of the initial guided analytics for parameter testing and
     controlband extraction framework. Functions are available for continuous and 
-    categorical target variables as well as for generating a standardized report of the
+    categorical target variables as well as for generating standardized reports of the
     conducted analysis.
+URL: https://github.com/stefan-stein/igate
+BugReports: https://github.com/stefan-stein/igate/issues
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

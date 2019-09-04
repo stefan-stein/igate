@@ -56,17 +56,17 @@ corresponding to the best 8 (B) and worst 8 (W) instances of the target
 variable are identified. For each of these 16 observations, each SSV is
 inspected in turn. The distribution of the values of the SSV of the 8
 BOB and 8 WOW are analyzed by applying the [Tukey-Duckworth
-test](https://www.jstor.org/stable/1266308?seq=1#page_scan_tab_contents).
-If the critical value returned by the test is larger than 6 (this
-corresponds to a p-value of less than 0.05), the SSV is retained as
-being potentially significant. This test was chosen for its simplicity
-and ease of interpretation and visualization. SSVs failing the test are
-highly unlikely to be influential whilst SSVs passing the test may be
-influential. The Wilcoxon-Rank test performed in step three of iGATE
-serves as a possibly more widely known alternative, that might, however,
-be harder to explain to non-statisticians. The main function of these
-steps is to facilitate dimensionality reduction in the data set to
-generate a manageable population for expert consideration.
+test](https://en.wikipedia.org/wiki/Tukey–Duckworth_test) (see reference
+in link for original paper). If the critical value returned by the test
+is larger than 6 (this corresponds to a p-value of less than 0.05), the
+SSV is retained as being potentially significant. This test was chosen
+for its simplicity and ease of interpretation and visualization. SSVs
+failing the test are highly unlikely to be influential whilst SSVs
+passing the test may be influential. The Wilcoxon-Rank test performed in
+step three of iGATE serves as a possibly more widely known alternative,
+that might, however, be harder to explain to non-statisticians. The main
+function of these steps is to facilitate dimensionality reduction in the
+data set to generate a manageable population for expert consideration.
 
 Step 5 is performed by calling `igate.regressions`, resp.
 `categorical.freqplot`. These functions produce a regression (for

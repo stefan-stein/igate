@@ -1,6 +1,6 @@
 ## Test environments
 * local OS X install, R 3.6.0
-* local Windows 7 install R 3.6.0
+* winbuilder (devel)
 
 ## R CMD check results
 
@@ -26,6 +26,7 @@ Martina Schmirl in the name of the CRAN team in her email from the 01.09.2019. T
 The changes are as follows:
 
 * Changed and shortened the title as requested; changed description as requested.
+* Added a URL describing the methods used in the package as well as a URL for reporting bugs to the DESCRIPTION file.
 * Added \\value field for the report function.
 * Information is now written to the console via the `message()` function rather than `print()` or `cat()`.
 * I no longer change the user's settings.
@@ -43,7 +44,7 @@ The changes are as follows:
   The above measures are similar to how functions such as `save` from the base package or `write_csv` from the readr
   package write to the user's file space and therefore I hope this is a legitimate way of obtaining the user's
   permission to write to their file space.
-* Use of \\dontrun{} in the examples of `report`: The new version of `report` needs an output directory as argument which depends on the file space structure of the user's machine. Hence \\dontrun{} is necessary.
+* Use of \\dontrun{} in the examples of `report`: The new version of `report` needs an output directory as argument which depends on the file space structure of the user's machine. Hence \\dontrun{} is necessary in this new version.
 
 
 
