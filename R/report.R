@@ -16,11 +16,11 @@
 #' @param outlier_removal_ssv Was outlier removal conducted for each \code{ssv}?
 #' @param good_outcome Are \code{"low"} or \code{"high"} values of \code{target} good? Or, in
 #' case of a categorical \code{target} the name of the best category as a string.
-#' @param results_path Filepath to a .csv file containing results of \code{\link{igate}} or \code{\link{categorical.igate}}.
+#' @param results_path Name of R object (as string) containing the results of \code{\link{igate}} or \code{\link{categorical.igate}}.
 #' @param validation Logical. Has validation of the results been performed?
-#' @param validation_path R object containing the validated observations, i.e. first data frame returned by \code{\link{validate}}.
-#' @param validation_counts R object containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.
-#' @param validation_summary R object containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.
+#' @param validation_path Name R object (as string) containing the validated observations, i.e. first data frame returned by \code{\link{validate}}.
+#' @param validation_counts Name of R object (as string) containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.
+#' @param validation_summary Name of R object (as string) containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.
 #' @param image_directory Directory which contains the plots from \code{igate}, \code{igate.regressions} etc.
 #' @param output_name Desired name of the output file. File extension .html will be added automatically if not supplied.
 #' If \code{NULL} will be *iGATE_Report.html*.
@@ -34,28 +34,24 @@
 #'
 #' @examples
 #'
-#'\dontrun{
-#' ## For continuous target
-#' ## If you want to create a new igate from scratch, this is the last step
-#' ## and relies on executing the other functions in this package first.
-#' ## Run igate
-#' results <- igate(iris, target = "Sepal.Length", savePlots = TRUE)
-#' ## Produce regression plots
-#' igate.regressions(iris, target = "Sepal.Length", savePlots = TRUE)
-#' ## Validate findings and store results
-#' x <- validate(iris, target = "Sepal.Length", causes = results$Causes, results_df = results)
-#' ## Split above results
-#' validatedObs <- x[[1]]
-#' validationCounts <- x[[2]]
-#' validationSummary <- x[[3]]
-#' ## Create report
-#' # Change this to desired output directory
-#' output_dir <- "YOUR_DIRECTORY"
-#' report(df = iris, target = "Sepal.Length", type = "continuous", good_outcome = "low",
-#' results_path = "results", validation = TRUE, validation_path = "validatedObs",
-#' validation_counts = "validationCounts", validation_summary = "validationSummary",
-#' output_name = "testing_igate", output_directory = output_dir)
-#'}
+#' ## Example for categorical target variable
+#' # If you want to conduct an igate analysis from scratch, running report
+#' # is the last step and relies on executing the other functions in this package first.
+#' # Run categorical.igate
+#' df <- mtcars
+#' df$cyl <- as.factor(df$cyl)
+#' results <- categorical.igate(df, target = "cyl", best.cat = "8", worst.cat = "4")
+#' # Produce density plots
+#' # Suppose you only want to analyse further the first three identified ssv
+#' results <- results[1:3,]
+#' categorical.freqplot(mtcars, target = "cyl", ssv = results$Causes , savePlots = TRUE)
+#'
+#' report(df = df, target = "cyl", type = "categorical", good_outcome = "8",
+#' results_path = "results",
+#' output_name = "testing_igate", output_directory = tempdir())
+#'
+#'
+#'
 #'
 #' @export
 

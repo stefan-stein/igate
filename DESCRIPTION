@@ -1,13 +1,14 @@
 Package: igate
 Type: Package
 Title: Guided Analytics for Testing Manufacturing Parameters
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: person("Stefan", "Stein", email = "s.stein@warwick.ac.uk",
                   role = c("aut", "cre"))
 Description: An implementation of the initial guided analytics for parameter testing and
     controlband extraction framework. Functions are available for continuous and 
     categorical target variables as well as for generating standardized reports of the
-    conducted analysis.
+    conducted analysis. See <https://github.com/stefan-stein/igate> for more information
+    on the technology.
 URL: https://github.com/stefan-stein/igate
 BugReports: https://github.com/stefan-stein/igate/issues
 License: GPL-3

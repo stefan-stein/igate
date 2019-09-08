@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 # igate
 
 <!-- badges: start -->
+[![Travis build status](https://travis-ci.org/stefan-stein/igate.svg?branch=master)](https://travis-ci.org/stefan-stein/igate)
 <!-- badges: end -->
 
 The goal of igate is to provide you with a quick and powerful, yet easy to understand toolbox that lets you extract relevant process parameters from manufacturing data, validate these parameters and find their optimal ranges and automatically create concise reports of the conducted analysis.

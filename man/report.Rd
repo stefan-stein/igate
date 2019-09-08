@@ -34,15 +34,15 @@ this is set to \code{FALSE} automatically.}
 \item{good_outcome}{Are \code{"low"} or \code{"high"} values of \code{target} good? Or, in
 case of a categorical \code{target} the name of the best category as a string.}
 
-\item{results_path}{Filepath to a .csv file containing results of \code{\link{igate}} or \code{\link{categorical.igate}}.}
+\item{results_path}{Name of R object (as string) containing the results of \code{\link{igate}} or \code{\link{categorical.igate}}.}
 
 \item{validation}{Logical. Has validation of the results been performed?}
 
-\item{validation_path}{R object containing the validated observations, i.e. first data frame returned by \code{\link{validate}}.}
+\item{validation_path}{Name R object (as string) containing the validated observations, i.e. first data frame returned by \code{\link{validate}}.}
 
-\item{validation_counts}{R object containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.}
+\item{validation_counts}{Name of R object (as string) containing the counts from validation, i.e. the second data frame returned by \code{\link{validate}}.}
 
-\item{validation_summary}{R object containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.}
+\item{validation_summary}{Name of R object (as string) containing the summary of \code{validation_path}, i.e. the third data frame returned by \code{\link{validate}}.}
 
 \item{image_directory}{Directory which contains the plots from \code{igate}, \code{igate.regressions} etc.}
 
@@ -64,27 +64,23 @@ for it. Be aware that running this function will create an html document in your
 }
 \examples{
 
-\dontrun{
-## For continuous target
-## If you want to create a new igate from scratch, this is the last step
-## and relies on executing the other functions in this package first.
-## Run igate
-results <- igate(iris, target = "Sepal.Length", savePlots = TRUE)
-## Produce regression plots
-igate.regressions(iris, target = "Sepal.Length", savePlots = TRUE)
-## Validate findings and store results
-x <- validate(iris, target = "Sepal.Length", causes = results$Causes, results_df = results)
-## Split above results
-validatedObs <- x[[1]]
-validationCounts <- x[[2]]
-validationSummary <- x[[3]]
-## Create report
-# Change this to desired output directory
-output_dir <- "YOUR_DIRECTORY"
-report(df = iris, target = "Sepal.Length", type = "continuous", good_outcome = "low",
-results_path = "results", validation = TRUE, validation_path = "validatedObs",
-validation_counts = "validationCounts", validation_summary = "validationSummary",
-output_name = "testing_igate", output_directory = output_dir)
-}
+## Example for categorical target variable
+# If you want to da an igate analysis from scratch, running report
+# is the last step and relies on executing the other functions in this package first.
+# Run categorical.igate
+df <- mtcars
+df$cyl <- as.factor(df$cyl)
+results <- categorical.igate(df, target = "cyl", best.cat = "8", worst.cat = "4")
+# Produce density plots
+# Suppose you only want to analyse further the first three identified ssv
+results <- results[1:3,]
+categorical.freqplot(mtcars, target = "cyl", ssv = results$Causes , savePlots = TRUE)
+
+report(df = df, target = "cyl", type = "categorical", good_outcome = "8",
+results_path = "results",
+output_name = "testing_igate", output_directory = tempdir())
+
+
+
 
 }

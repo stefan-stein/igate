@@ -24,8 +24,8 @@ The igate package implements the **i**nitial **G**uided **A**nalytics for parame
 Having identified a manufacturing ‘problem’ to be investigated, a data set is assembled for a ‘typical’ period of
 operation, i.e. excluding known disturbances such as maintenance or equipment failures. This
 data set includes the so called *target variable*, a direct indication or proxy for the problem under
-consideration and the variale whose variation we want to explain, and a number of parameters representing *suspected sources of variation*
-(SSVs), i.e. variables that we consider potentially influetial for the value of the `target`. Parameters with known and explainable relationships with the target variable should be
+consideration and the variable whose variation we want to explain, and a number of parameters representing *suspected sources of variation*
+(SSVs), i.e. variables that we consider potentially influential for the value of the `target`. Parameters with known and explainable relationships with the target variable should be
 excluded from the analysis, although this can be addressed in an iterative manner though
 subsequent exclusion and repeating of the process. Care has been taken to robustify the approach against outliers and missing data, in order to make it a reliable tool that can be used with possibly messy or incomplete real-world data sets. The iGATE procedure consists of the following steps (detailed explanations follow below):
 
