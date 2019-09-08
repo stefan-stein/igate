@@ -29,10 +29,8 @@ params:
 
 ```{r setup, include=FALSE}
 library(knitr)
-library(readr)
 library(xtable)
 library(kableExtra)
-library(pander)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
@@ -40,7 +38,6 @@ knitr::opts_chunk$set(echo = FALSE)
 
 #Determine the follow up test used for analysis
 follow_up_test <- if(params$test == "w"){"Wilcoxon Rank Test"}else{"Student's t-test"}
-#results <- read_csv(params$results_path)
 data(list = params$results_path)
 results <- get(params$results_path)
 if(params$validation){
@@ -83,12 +80,6 @@ The influential parameters and control bands `r if(params$validation){"have"}els
 The Tukey-Duckworth test and `r follow_up_test` produced the following results.
 
 ```{r countsandps}
-# pander(results[,1:3],
-#        caption = 'Results of the counting method and the Wilcoxon Rank Test.',
-#        missing = '',
-#        justify = 'lrr',
-#       booktabs = TRUE,
-#       longtable = TRUE)
 kable(results[,1:3],
       caption = paste0('Results of the counting method and the ', follow_up_test, "."),
       booktabs = TRUE,

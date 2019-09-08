@@ -51,7 +51,7 @@
 #' output_name = "testing_igate", output_directory = tempdir())
 #'
 #'
-#'
+#' @importFrom rmarkdown render pandoc_available
 #'
 #' @export
 
@@ -75,53 +75,64 @@ report <- function(df,
                    output_name = NULL,
                    output_directory){
 
-  if(missing(output_directory)){
-    stop("Please specify output directory.")
-  }
-  if(!validation && (!is.null(validation_path) || !is.null(validation_counts) || !is.null(validation_summary))){
-    stop("You used validation = FALSE, but provided at least one of validation_path, validation_counts or validation_summary.
-         Please provide all three of them and use validation = TRUE.")
-  }
-  if(validation && (is.null(validation_path) || is.null(validation_counts) || is.null(validation_summary))){
-    stop("You used validation = TRUE, but did not provide all of validation_path, validation_counts and validation_summary.")
-  }
+  # Check if pandoc is available
+  required_pandoc <- "1.12.3"
+  if(!rmarkdown::pandoc_available(required_pandoc)){
+    message(paste0("Pandoc version >=", required_pandoc, " is required but was not found
+                   (see the help page ?rmarkdown::pandoc_available). Please install pandoc."))
+  }else{
 
-  # If no ssv are provided, all the numeric columns have been used as ssv
-  if(is.null(ssv)){
-    nums <- sapply(df, is.numeric)
-    df_num <- df[,nums]%>%
-      select(-contains("time"),
-             -contains("visit"))
-    ssv <- names(df_num)
-    # This only works for continuous target. For categorical target would give empty vector.
-    if(type=="continuous"){
-      ssv <- ssv[-which(ssv == target)]
+    if(missing(output_directory)){
+      stop("Please specify output directory.")
     }
+    if(!validation && (!is.null(validation_path) || !is.null(validation_counts) || !is.null(validation_summary))){
+      stop("You used validation = FALSE, but provided at least one of validation_path, validation_counts or validation_summary.
+         Please provide all three of them and use validation = TRUE.")
+    }
+    if(validation && (is.null(validation_path) || is.null(validation_counts) || is.null(validation_summary))){
+      stop("You used validation = TRUE, but did not provide all of validation_path, validation_counts and validation_summary.")
+    }
+
+    # If no ssv are provided, all the numeric columns have been used as ssv
+    if(is.null(ssv)){
+      nums <- sapply(df, is.numeric)
+      df_num <- df[,nums]%>%
+        select(-contains("time"),
+               -contains("visit"))
+      ssv <- names(df_num)
+      # This only works for continuous target. For categorical target would give empty vector.
+      if(type=="continuous"){
+        ssv <- ssv[-which(ssv == target)]
+      }
+    }
+    if(type == "categorical"){outlier_removal_target <- FALSE}
+
+    path_to_markdown <- system.file("rmd", "iGATE_Report.Rmd", package = "igate")
+
+    rmarkdown::render(path_to_markdown,
+                      params = list(
+                        df_name = deparse(substitute(df)),
+                        versus = versus,
+                        target = target,
+                        type = type,
+                        test = test,
+                        ssv = ssv,
+                        outlier_removal_target = outlier_removal_target,
+                        outlier_removal_ssv = outlier_removal_ssv,
+                        good_outcome = good_outcome,
+                        results_path = results_path,
+                        validation = validation,
+                        validation_path = validation_path,
+                        validation_counts = validation_counts,
+                        validation_summary = validation_summary,
+                        image_directory = image_directory
+                      ),
+                      output_file = output_name,
+                      output_dir = output_directory,
+                      intermediates_dir = tempdir(),
+                      knit_root_dir = tempdir())
+
   }
-  if(type == "categorical"){outlier_removal_target <- FALSE}
-
-  path_to_markdown <- system.file("rmd", "iGATE_Report.Rmd", package = "igate")
-
-  rmarkdown::render(path_to_markdown,
-                    params = list(
-                      df_name = deparse(substitute(df)),
-                      versus = versus,
-                      target = target,
-                      type = type,
-                      test = test,
-                      ssv = ssv,
-                      outlier_removal_target = outlier_removal_target,
-                      outlier_removal_ssv = outlier_removal_ssv,
-                      good_outcome = good_outcome,
-                      results_path = results_path,
-                      validation = validation,
-                      validation_path = validation_path,
-                      validation_counts = validation_counts,
-                      validation_summary = validation_summary,
-                      image_directory = image_directory
-                    ),
-                    output_file = output_name,
-                    output_dir = output_directory)
 
 }
 

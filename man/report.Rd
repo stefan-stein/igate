@@ -65,7 +65,7 @@ for it. Be aware that running this function will create an html document in your
 \examples{
 
 ## Example for categorical target variable
-# If you want to da an igate analysis from scratch, running report
+# If you want to conduct an igate analysis from scratch, running report
 # is the last step and relies on executing the other functions in this package first.
 # Run categorical.igate
 df <- mtcars
@@ -79,8 +79,6 @@ categorical.freqplot(mtcars, target = "cyl", ssv = results$Causes , savePlots = 
 report(df = df, target = "cyl", type = "categorical", good_outcome = "8",
 results_path = "results",
 output_name = "testing_igate", output_directory = tempdir())
-
-
 
 
 }
