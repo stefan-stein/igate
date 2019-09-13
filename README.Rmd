@@ -16,7 +16,10 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/stefan-stein/igate.svg?branch=master)](https://travis-ci.org/stefan-stein/igate)
+[![CRAN Version](https://www.r-pkg.org/badges/version/igate)](https://CRAN.R-project.org/package=igate)
 <!-- badges: end -->
+
+
 
 The goal of igate is to provide you with a quick and powerful, yet easy to understand toolbox that lets you extract relevant process parameters from manufacturing data, validate these parameters and find their optimal ranges and automatically create concise reports of the conducted analysis.
 
@@ -64,7 +67,13 @@ We consider the last step, the reporting of the results in a standardized manner
 
 ## Installation
 
-You can install the development version from [GitHub](https://github.com/) with:
+You can install the package directly from CRAN.
+```{r, eval=FALSE}
+install.packages("igate")
+```
+
+
+Or you can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")

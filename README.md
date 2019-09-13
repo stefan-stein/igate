@@ -7,6 +7,8 @@
 
 [![Travis build
 status](https://travis-ci.org/stefan-stein/igate.svg?branch=master)](https://travis-ci.org/stefan-stein/igate)
+[![CRAN
+Version](https://www.r-pkg.org/badges/version/igate)](https://CRAN.R-project.org/package=igate)
 <!-- badges: end -->
 
 The goal of igate is to provide you with a quick and powerful, yet easy
@@ -101,7 +103,13 @@ achieved by calling the `report` function.
 
 ## Installation
 
-You can install the development version from
+You can install the package directly from CRAN.
+
+``` r
+install.packages("igate")
+```
+
+Or you can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r

@@ -1,7 +1,7 @@
 Package: igate
 Type: Package
 Title: Guided Analytics for Testing Manufacturing Parameters
-Version: 0.3.3
+Version: 0.3.3.900
 Authors@R: person("Stefan", "Stein", email = "s.stein@warwick.ac.uk",
                   role = c("aut", "cre"))
 Description: An implementation of the initial guided analytics for parameter testing and
