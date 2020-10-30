@@ -12,7 +12,8 @@ categorical.igate(
   worst.cat,
   test = "w",
   ssv = NULL,
-  outlier_removal_ssv = TRUE
+  outlier_removal_ssv = TRUE,
+  count_critical_value = 6
 )
 }
 \arguments{
@@ -39,6 +40,9 @@ will be tested. If no list of \code{ssv} is provided, the test will be performed
 on all numeric variables.}
 
 \item{outlier_removal_ssv}{Logical. Should outlier removal be performed for each \code{ssv} (default: \code{TRUE})?}
+
+\item{count_critical_value}{Integer. The critical value for the count summary statistic. Only \code{ssv} with a value larger
+than \code{count_critical_value} will be returned. Default is 6 which corresponds to a p-value of roughly 0.05.}
 }
 \value{
 A data frame with the following columns

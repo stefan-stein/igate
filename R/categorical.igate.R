@@ -23,6 +23,8 @@
 #' will be tested. If no list of \code{ssv} is provided, the test will be performed
 #' on all numeric variables.
 #' @param outlier_removal_ssv Logical. Should outlier removal be performed for each \code{ssv} (default: \code{TRUE})?
+#' @param count_critical_value Integer. The critical value for the count summary statistic. Only \code{ssv} with a value larger
+#' than \code{count_critical_value} will be returned. Default is 6 which corresponds to a p-value of roughly 0.05.
 #'
 #'
 #' @return A data frame with the following columns
@@ -96,7 +98,8 @@ categorical.igate <- function(df,
                              worst.cat,
                              test = "w",
                              ssv = NULL,
-                             outlier_removal_ssv = TRUE){
+                             outlier_removal_ssv = TRUE,
+                             count_critical_value = 6){
 
 
   # Preparations ------------------------------------------------------------
@@ -226,8 +229,8 @@ categorical.igate <- function(df,
     bad_band_lower_bound[i] <- ith_counting_test$bad_band_lower_bound
     bad_band_upper_bound[i] <- ith_counting_test$bad_band_upper_bound
 
-    #follow up test if count is larger than 6
-    if(test_results[i] >= 6){
+    #follow up test if count is larger than count_critical_value
+    if(test_results[i] >= count_critical_value){
       tryCatch(p_values[i] <- h.test(BOB_i[,2], WOW_i[,2])$p.value,
                error = function(e) {message(paste("Skip constant column", names(BOB.WOW_i)[2]));
                  p_values[i] <-  -2})
@@ -245,7 +248,7 @@ categorical.igate <- function(df,
                         na_removed = na_removed,
                         ties_best_cat = tied_obs_best,
                         ties_worst_cat = tied_obs_worst)%>%
-    filter(Count >= 6)%>%
+    filter(Count >= count_critical_value)%>%
     arrange(desc(Count))
   final.results <- data.frame(results,
                               adjusted.p.values = p.adjust(results$p.values))
