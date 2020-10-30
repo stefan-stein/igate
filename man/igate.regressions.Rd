@@ -4,9 +4,15 @@
 \alias{igate.regressions}
 \title{Produces the regression plots for sanity check in iGATE}
 \usage{
-igate.regressions(df, target, ssv = NULL,
-  outlier_removal_target = TRUE, outlier_removal_ssv = TRUE,
-  savePlots = FALSE, image_directory = tempdir())
+igate.regressions(
+  df,
+  target,
+  ssv = NULL,
+  outlier_removal_target = TRUE,
+  outlier_removal_ssv = TRUE,
+  savePlots = FALSE,
+  image_directory = tempdir()
+)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}

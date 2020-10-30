@@ -4,12 +4,25 @@
 \alias{report}
 \title{Generates report about a conducted igate.}
 \usage{
-report(df, versus = 8, target, type = "continuous", test = "w",
-  ssv = NULL, outlier_removal_target = TRUE,
-  outlier_removal_ssv = TRUE, good_outcome = "low", results_path,
-  validation = FALSE, validation_path = NULL,
-  validation_counts = NULL, validation_summary = NULL,
-  image_directory = tempdir(), output_name = NULL, output_directory)
+report(
+  df,
+  versus = 8,
+  target,
+  type = "continuous",
+  test = "w",
+  ssv = NULL,
+  outlier_removal_target = TRUE,
+  outlier_removal_ssv = TRUE,
+  good_outcome = "low",
+  results_path,
+  validation = FALSE,
+  validation_path = NULL,
+  validation_counts = NULL,
+  validation_summary = NULL,
+  image_directory = tempdir(),
+  output_name = NULL,
+  output_directory
+)
 }
 \arguments{
 \item{df}{The data frame that was analysed with \code{\link{igate}} or \code{\link{categorical.igate}}.}

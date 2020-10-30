@@ -4,8 +4,16 @@
 \alias{categorical.igate}
 \title{igate function for categorical target variables}
 \usage{
-categorical.igate(df, versus = 8, target, best.cat, worst.cat,
-  test = "w", ssv = NULL, outlier_removal_ssv = TRUE)
+categorical.igate(
+  df,
+  versus = 8,
+  target,
+  best.cat,
+  worst.cat,
+  test = "w",
+  ssv = NULL,
+  outlier_removal_ssv = TRUE
+)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}

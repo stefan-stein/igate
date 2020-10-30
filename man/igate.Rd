@@ -4,9 +4,18 @@
 \alias{igate}
 \title{igate function for continuous target variables}
 \usage{
-igate(df, versus = 8, target, test = "w", ssv = NULL,
-  outlier_removal_target = TRUE, outlier_removal_ssv = TRUE,
-  good_end = "low", savePlots = FALSE, image_directory = tempdir())
+igate(
+  df,
+  versus = 8,
+  target,
+  test = "w",
+  ssv = NULL,
+  outlier_removal_target = TRUE,
+  outlier_removal_ssv = TRUE,
+  good_end = "low",
+  savePlots = FALSE,
+  image_directory = tempdir()
+)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}

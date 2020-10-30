@@ -5,9 +5,14 @@
 \title{Produces frequency plots (normed to density plots to account for
 different category sizes) for sanity check in categorical iGATE.}
 \usage{
-categorical.freqplot(df, target, ssv = NULL,
-  outlier_removal_ssv = TRUE, savePlots = FALSE,
-  image_directory = tempdir())
+categorical.freqplot(
+  df,
+  target,
+  ssv = NULL,
+  outlier_removal_ssv = TRUE,
+  savePlots = FALSE,
+  image_directory = tempdir()
+)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}
