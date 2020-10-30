@@ -9,6 +9,8 @@
 status](https://travis-ci.org/stefan-stein/igate.svg?branch=master)](https://travis-ci.org/stefan-stein/igate)
 [![CRAN
 Version](https://www.r-pkg.org/badges/version/igate)](https://CRAN.R-project.org/package=igate)
+[![CRAN RStudio mirror
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/igate?color=blue)](https://r-pkg.org/pkg/igate)
 <!-- badges: end -->
 
 The goal of igate is to provide you with a quick and powerful, yet easy

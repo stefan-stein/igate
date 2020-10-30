@@ -3,13 +3,13 @@ Type: Package
 Title: Guided Analytics for Testing Manufacturing Parameters
 Version: 0.3.3.900
 Authors@R: person("Stefan", "Stein", email = "s.stein@warwick.ac.uk",
-                  role = c("aut", "cre"))
+                  role = c("aut", "cre"),
+                  comment = c(ORCID = "0000-0002-5541-6658"))
 Description: An implementation of the initial guided analytics for parameter testing and
     controlband extraction framework. Functions are available for continuous and 
     categorical target variables as well as for generating standardized reports of the
-    conducted analysis. See <https://github.com/stefan-stein/igate> for more information
-    on the technology.
-URL: https://github.com/stefan-stein/igate
+    conducted analysis. See <https://doi.org/10.1016/j.commatsci.2020.110053> for the paper.
+URL: https://doi.org/10.1016/j.commatsci.2020.110053, https://github.com/stefan-stein/igate
 BugReports: https://github.com/stefan-stein/igate/issues
 License: GPL-3
 Encoding: UTF-8
@@ -26,5 +26,5 @@ Imports: ggplot2,
     xtable,
     kableExtra,
     rmarkdown
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr

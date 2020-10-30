@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/stefan-stein/igate.svg?branch=master)](https://travis-ci.org/stefan-stein/igate)
 [![CRAN Version](https://www.r-pkg.org/badges/version/igate)](https://CRAN.R-project.org/package=igate)
+[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/grand-total/igate?color=blue)](https://r-pkg.org/pkg/igate)
 <!-- badges: end -->
 
 
