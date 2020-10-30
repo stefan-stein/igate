@@ -17,7 +17,10 @@ The goal of igate is to provide you with a quick and powerful, yet easy
 to understand toolbox that lets you extract relevant process parameters
 from manufacturing data, validate these parameters and find their
 optimal ranges and automatically create concise reports of the conducted
-analysis.
+analysis. The igate methodology has been published in [A guided
+analytics tool for feature selection in steel manufacturing with an
+application to blast furnace top gas
+efficiency](https://doi.org/10.1016/j.commatsci.2020.110053).
 
 # Methodology
 
