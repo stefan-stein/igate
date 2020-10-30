@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 # Methodology
 
-The igate package implements the **i**nitial **G**uided **A**nalytics for parameter **T**esting and controland **E**xtraction (iGATE) framework for manufacturing data. The goal of iGATE is to enable *guided analytics* in industry, that is, to provide a statistically sound framework for process optimization that is easy enough to be used and understood by employees without statistical training. The goal is to have simplicity and interpretability while maintaining statistical rigor.
+The igate package implements the **i**nitial **G**uided **A**nalytics for parameter **T**esting and controland **E**xtraction (iGATE) framework for manufacturing data. The goal of iGATE is to enable *guided analytics* in industry, that is, to provide a statistically sound framework for process optimization that is easy enough to be used and understood by employees without statistical training. The goal is to have simplicity and interpretability while maintaining statistical rigor. The full methodology has been published in [@igate_paper].
 
 Having identified a manufacturing ‘problem’ to be investigated, a data set is assembled for a ‘typical’ period of
 operation, i.e. excluding known disturbances such as maintenance or equipment failures. This
