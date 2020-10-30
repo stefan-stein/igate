@@ -31,10 +31,13 @@
 #' times are returned.
 #'
 #'
-#' @return A data frame with the summary statistics for those parameters that were selected
+#' @return A list with two elements. The first element is named \code{aggregated_results}:
+#' A data frame with the summary statistics for those parameters that were selected
 #' at least \code{floor(iterations*threshold)} times:
 #'\tabular{ll}{
 #' \code{Causes} \tab Those \code{ssv} that have been found to be influential to the \code{target} variable.\cr
+#' \code{rel_frequency} \tab Relative frequency of how often this \code{Cause} was selected, i.e.
+#' \code{(number of times it was selected) / iterations} \cr
 #' \code{median_count} \tab The median value returned by the counting method for this parameter. \cr
 #' \code{median_p_value} \tab The median p-value of the hypothesis test performed, i.e. either of the
 #' Wilcoxon rank test (in case \code{test = "w"}) or the t-test (if \code{test = "t"}).\cr
@@ -43,6 +46,10 @@
 #' \code{median_bad_lower_bound} \tab The median lower bound for this \code{Cause} for bad quality.\cr
 #' \code{median_bad_upper_bound} \tab The median upper bound for this \code{Cause} for bad quality.
 #' }
+#'
+#' The second element is a list of \code{iterations} data frames named \code{individual_runs}, containing
+#' the raw results from each individual run of \code{\link{categorical.igate}}. This can be useful if one is
+#' interested in more than only the summary statistics returned in \code{aggregated_results}.
 #'
 #'
 #'
@@ -73,14 +80,23 @@
 #' the \code{target} is likely to be good. If it is in the interval
 #' [\code{bad_lower_bound},\code{bad_upper_bound}], the \code{target} is likely to be bad.
 #'
-#' @examples robust.categorical.igate(mtcars, target = "cyl",
+#' This process is repeated \code{iterations} times and only those \code{ssv} that are selected in
+#' at least \code{floor(iterations * threshold)} times are returned in the final output.
+#'
+#' @examples
+#'
+#' results <- robust.categorical.igate(mtcars, target = "cyl",
 #' best.cat = "8", worst.cat = "4", iterations = 50, threshold = 0.5)
+#'
+#' # To get the aggregated results
+#' results$aggregated_results
+#'
 #'
 #' @export
 #'
 #' @importFrom stats median
 #' @importFrom utils capture.output
-#' @importFrom dplyr select filter contains arrange desc %>% group_by data_frame n summarise
+#' @importFrom dplyr select filter contains arrange desc %>% group_by data_frame n summarise bind_rows
 #'
 
 
@@ -109,32 +125,33 @@ robust.categorical.igate <- function(df,
   }
 
   # These two lines are only here to appease R CMD check
-  Causes <- Frequency <- Count <- p.values <- median_count <- NULL
+  Causes <- rel_frequency <- Count <- p.values <- median_count <- NULL
   good_lower_bound <- good_upper_bound <- bad_lower_bound <- bad_upper_bound <- NULL
 
-  results <- data_frame()
+  results <- vector("list", length = iterations)
   for (i in 1:iterations) {
     if(i %% floor(0.1*iterations) == 0){message(paste0("Iteration ", i))}
     # To suppress console output by categorical.igate
     suppressMessages(res <- categorical.igate(df, versus, target, best.cat, worst.cat, test, ssv, outlier_removal_ssv))
 
-    results <- rbind(results, res)
+    results[[i]] <- res
     rm(res)
   }
-  y <- results%>%
-    group_by(Causes)%>%
-    summarise(Frequency = n())%>%
-    filter(Frequency>=floor(iterations*threshold))
+
   results_aggregated <- results%>%
-    filter(Causes %in% (y$Causes))%>%
+    bind_rows()%>%
     group_by(Causes)%>%
-    summarise(median_count = median(Count),
+    summarise(rel_frequency = n() / iterations,
+              median_count = median(Count),
               median_p_value = median(p.values),
               median_good_lower_bound = median(good_lower_bound),
               median_good_upper_bound = median(good_upper_bound),
               median_bad_lower_bound = median(bad_lower_bound),
               median_bad_upper_bound = median(bad_upper_bound))%>%
-    arrange(desc(median_count))
+    filter(rel_frequency >= threshold)%>%
+    arrange(desc(rel_frequency), desc(median_count))
 
-  return(results_aggregated)
+  # return(results_aggregated)
+  return(list(aggregated_results = results_aggregated,
+              individual_runs = results))
 }

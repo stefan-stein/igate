@@ -4,9 +4,18 @@
 \alias{robust.categorical.igate}
 \title{Robust igate for categorical target variables}
 \usage{
-robust.categorical.igate(df, versus = 8, target, best.cat, worst.cat,
-  test = "w", ssv = NULL, outlier_removal_ssv = TRUE,
-  iterations = 50, threshold = 0.5)
+robust.categorical.igate(
+  df,
+  versus = 8,
+  target,
+  best.cat,
+  worst.cat,
+  test = "w",
+  ssv = NULL,
+  outlier_removal_ssv = TRUE,
+  iterations = 50,
+  threshold = 0.5
+)
 }
 \arguments{
 \item{df}{Data frame to be analysed.}
@@ -40,10 +49,13 @@ have been perfermed so far will be printed to the console every \code{0.1*iterat
 times are returned.}
 }
 \value{
+A list with two elements. The first element is named \code{aggregated_results}:
 A data frame with the summary statistics for those parameters that were selected
 at least \code{floor(iterations*threshold)} times:
 \tabular{ll}{
 \code{Causes} \tab Those \code{ssv} that have been found to be influential to the \code{target} variable.\cr
+\code{rel_frequency} \tab Relative frequency of how often this \code{Cause} was selected, i.e.
+\code{(number of times it was selected) / iterations} \cr
 \code{median_count} \tab The median value returned by the counting method for this parameter. \cr
 \code{median_p_value} \tab The median p-value of the hypothesis test performed, i.e. either of the
 Wilcoxon rank test (in case \code{test = "w"}) or the t-test (if \code{test = "t"}).\cr
@@ -52,6 +64,10 @@ Wilcoxon rank test (in case \code{test = "w"}) or the t-test (if \code{test = "t
 \code{median_bad_lower_bound} \tab The median lower bound for this \code{Cause} for bad quality.\cr
 \code{median_bad_upper_bound} \tab The median upper bound for this \code{Cause} for bad quality.
 }
+
+The second element is a list of \code{iterations} data frames named \code{individual_runs}, containing
+the raw results from each individual run of \code{\link{categorical.igate}}. This can be useful if one is
+interested in more than only the summary statistics returned in \code{aggregated_results}.
 }
 \description{
 This function performs a robust an initial Guided Analysis for parameter testing and
@@ -86,9 +102,17 @@ For those \code{ssv} determined to be significant, control bands are extracted. 
 If the value for an \code{ssv} is in the interval [\code{good_lower_bound},\code{good_upper_bound}]
 the \code{target} is likely to be good. If it is in the interval
 [\code{bad_lower_bound},\code{bad_upper_bound}], the \code{target} is likely to be bad.
+
+This process is repeated \code{iterations} times and only those \code{ssv} that are selected in
+at least \code{floor(iterations * threshold)} times are returned in the final output.
 }
 \examples{
-robust.categorical.igate(mtcars, target = "cyl",
+
+results <- robust.categorical.igate(mtcars, target = "cyl",
 best.cat = "8", worst.cat = "4", iterations = 50, threshold = 0.5)
+
+# To get the aggregated results
+results$aggregated_results
+
 
 }
