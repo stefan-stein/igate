@@ -85,6 +85,8 @@
 #'
 #' @examples
 #'
+#' df <- mtcars
+#' df$cyl <- as.factor(df$cyl)
 #' results <- robust.categorical.igate(mtcars, target = "cyl",
 #' best.cat = "8", worst.cat = "4", iterations = 50, threshold = 0.5)
 #'
@@ -96,7 +98,7 @@
 #'
 #' @importFrom stats median
 #' @importFrom utils capture.output
-#' @importFrom dplyr select filter contains arrange desc %>% group_by data_frame n summarise bind_rows
+#' @importFrom dplyr select filter contains arrange desc %>% group_by data_frame n summarise bind_rows left_join everything
 #'
 
 
@@ -132,24 +134,44 @@ robust.categorical.igate <- function(df,
   for (i in 1:iterations) {
     if(i %% floor(0.1*iterations) == 0){message(paste0("Iteration ", i))}
     # To suppress console output by categorical.igate
-    suppressMessages(res <- categorical.igate(df, versus, target, best.cat, worst.cat, test, ssv, outlier_removal_ssv))
+    suppressMessages(res <- categorical.igate(df, versus, target, best.cat, worst.cat, test, ssv, outlier_removal_ssv, count_critical_value = 0))
 
     results[[i]] <- res
     rm(res)
   }
 
+
+  freq <- results%>%bind_rows()%>%
+    filter(Count >= 6)%>%
+    group_by(Causes)%>%
+    summarise(rel_frequency = n() / iterations)
+
   results_aggregated <- results%>%
     bind_rows()%>%
     group_by(Causes)%>%
-    summarise(rel_frequency = n() / iterations,
-              median_count = median(Count),
+    summarise(median_count = median(Count),
               median_p_value = median(p.values),
               median_good_lower_bound = median(good_lower_bound),
               median_good_upper_bound = median(good_upper_bound),
               median_bad_lower_bound = median(bad_lower_bound),
               median_bad_upper_bound = median(bad_upper_bound))%>%
+    dplyr::left_join(freq, by = "Causes")%>%
+    select(Causes, rel_frequency, everything())%>%
     filter(rel_frequency >= threshold)%>%
     arrange(desc(rel_frequency), desc(median_count))
+
+  # results_aggregated <- results%>%
+  #   bind_rows()%>%
+  #   group_by(Causes)%>%
+  #   summarise(rel_frequency = n() / iterations,
+  #             median_count = median(Count),
+  #             median_p_value = median(p.values),
+  #             median_good_lower_bound = median(good_lower_bound),
+  #             median_good_upper_bound = median(good_upper_bound),
+  #             median_bad_lower_bound = median(bad_lower_bound),
+  #             median_bad_upper_bound = median(bad_upper_bound))%>%
+  #   filter(rel_frequency >= threshold)%>%
+  #   arrange(desc(rel_frequency), desc(median_count))
 
   # return(results_aggregated)
   return(list(aggregated_results = results_aggregated,

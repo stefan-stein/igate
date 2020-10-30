@@ -108,6 +108,8 @@ at least \code{floor(iterations * threshold)} times are returned in the final ou
 }
 \examples{
 
+df <- mtcars
+df$cyl <- as.factor(df$cyl)
 results <- robust.categorical.igate(mtcars, target = "cyl",
 best.cat = "8", worst.cat = "4", iterations = 50, threshold = 0.5)
 
